@@ -15,7 +15,7 @@ export function Navbar() {
       <div className="flex items-center gap-2">
         <ThemeToggle />
         <div className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-2 py-1 dark:border-zinc-800 dark:bg-zinc-900">
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-zinc-700 to-zinc-900 text-xs font-semibold text-zinc-50 dark:from-zinc-200 dark:to-zinc-500 dark:text-zinc-900">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-accent-500 to-accent-700 text-xs font-semibold text-white shadow-sm">
             AK
           </span>
           <span className="hidden pr-1 text-sm font-medium text-zinc-700 dark:text-zinc-300 sm:inline">

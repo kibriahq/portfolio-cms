@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Eye } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { StatusBadge } from "@/components/posts/StatusBadge";
+import { PostCover } from "@/components/posts/PostCover";
 import { formatDate, formatNumber } from "@/lib/utils";
 import type { Post } from "@/types/post";
 
@@ -49,12 +50,19 @@ export function RecentPostsTable({ posts, limit = 5 }: RecentPostsTableProps) {
                 className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/40"
               >
                 <td className="px-5 py-3 sm:px-6">
-                  <Link
-                    href="/posts"
-                    className="font-medium text-zinc-900 hover:underline dark:text-zinc-50"
-                  >
-                    {post.title}
-                  </Link>
+                  <div className="flex items-center gap-3">
+                    <PostCover
+                      src={post.coverImage}
+                      title={post.title}
+                      className="h-10 w-10 shrink-0"
+                    />
+                    <Link
+                      href="/posts"
+                      className="font-medium text-zinc-900 hover:underline dark:text-zinc-50"
+                    >
+                      {post.title}
+                    </Link>
+                  </div>
                 </td>
                 <td className="px-5 py-3 sm:px-6">
                   <StatusBadge status={post.status} />

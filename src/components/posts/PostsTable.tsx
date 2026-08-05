@@ -4,6 +4,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Button } from "@/components/ui/Button";
 import { StatusBadge } from "@/components/posts/StatusBadge";
 import { CategoryBadge } from "@/components/posts/CategoryBadge";
+import { PostCover } from "@/components/posts/PostCover";
 import { formatDate, formatNumber } from "@/lib/utils";
 import type { Post } from "@/types/post";
 
@@ -49,13 +50,20 @@ export function PostsTable({ posts }: PostsTableProps) {
                 className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/40"
               >
                 <td className="px-5 py-3 sm:px-6">
-                  <div className="flex flex-col">
-                    <span className="font-medium text-zinc-900 dark:text-zinc-50">
-                      {post.title}
-                    </span>
-                    <span className="text-xs text-zinc-400 dark:text-zinc-500">
-                      /{post.slug}
-                    </span>
+                  <div className="flex items-center gap-3">
+                    <PostCover
+                      src={post.coverImage}
+                      title={post.title}
+                      className="h-11 w-11 shrink-0"
+                    />
+                    <div className="flex min-w-0 flex-col">
+                      <span className="truncate font-medium text-zinc-900 dark:text-zinc-50">
+                        {post.title}
+                      </span>
+                      <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                        /{post.slug}
+                      </span>
+                    </div>
                   </div>
                 </td>
                 <td className="px-5 py-3 sm:px-6">

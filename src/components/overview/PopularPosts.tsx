@@ -50,7 +50,7 @@ export function PopularPosts({ posts }: PopularPostsProps) {
               </div>
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
                 <div
-                  className="h-full rounded-full bg-zinc-900 transition-all dark:bg-zinc-100"
+                  className="h-full rounded-full bg-gradient-to-r from-accent-500 to-accent-600 transition-all duration-700"
                   style={{ width: `${percentage}%` }}
                 />
               </div>

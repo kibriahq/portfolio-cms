@@ -8,10 +8,12 @@ export function Skeleton({
   return (
     <div
       className={cn(
-        "animate-pulse rounded-md bg-zinc-200 dark:bg-zinc-800",
+        "relative overflow-hidden rounded-md bg-zinc-200/70 dark:bg-zinc-800/70",
         className,
       )}
       {...props}
-    />
+    >
+      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-white/10" />
+    </div>
   );
 }

@@ -33,14 +33,17 @@ export function SidebarNav({ onNavigate }: SidebarNavProps) {
             onClick={onNavigate}
             aria-current={isActive ? "page" : undefined}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              "group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
               isActive
-                ? "bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
+                ? "bg-accent-50 text-accent-700 dark:bg-accent-500/10 dark:text-accent-300"
                 : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
             )}
           >
             <Icon className="h-4 w-4 shrink-0" />
             {item.label}
+            {isActive ? (
+              <span className="absolute inset-y-1.5 left-0 w-1 rounded-r-full bg-accent-500" />
+            ) : null}
           </Link>
         );
       })}
@@ -55,7 +58,7 @@ export function Brand() {
       className="flex items-center gap-2 px-3 py-1"
       aria-label="Portfolio CMS home"
     >
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900">
+      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent-500 to-accent-700 text-zinc-50 shadow-sm">
         <PenLine className="h-4 w-4" />
       </span>
       <span className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">

@@ -12,7 +12,8 @@ interface StatCardProps {
 }
 
 const accentMap = {
-  default: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+  default:
+    "bg-accent-50 text-accent-600 dark:bg-accent-500/10 dark:text-accent-400",
   success:
     "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
   warning:
@@ -28,19 +29,19 @@ export function StatCard({
   accent = "default",
 }: StatCardProps) {
   return (
-    <Card className="p-5 transition-shadow hover:shadow-md sm:p-6">
+    <Card className="p-5 transition-all hover:-translate-y-0.5 hover:shadow-md hover:shadow-zinc-200/60 hover:ring-1 hover:ring-accent-500/20 sm:p-6 dark:hover:shadow-black/30">
       <div className="flex items-start justify-between">
         <div className="space-y-2">
           <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
             {label}
           </p>
-          <p className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <p className="text-3xl font-semibold tracking-tight tabular-nums text-zinc-900 dark:text-zinc-50">
             {value}
           </p>
         </div>
         <span
           className={cn(
-            "flex h-10 w-10 items-center justify-center rounded-lg",
+            "flex h-11 w-11 items-center justify-center rounded-xl ring-1 ring-inset ring-black/5 dark:ring-white/10",
             accentMap[accent],
           )}
         >

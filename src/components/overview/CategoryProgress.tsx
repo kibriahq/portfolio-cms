@@ -5,14 +5,6 @@ interface CategoryProgressProps {
   data: Array<{ category: string; count: number; percentage: number }>;
 }
 
-const barColors = [
-  "bg-blue-500 dark:bg-blue-400",
-  "bg-emerald-500 dark:bg-emerald-400",
-  "bg-amber-500 dark:bg-amber-400",
-  "bg-zinc-500 dark:bg-zinc-400",
-  "bg-red-500 dark:bg-red-400",
-];
-
 export function CategoryProgress({ data }: CategoryProgressProps) {
   return (
     <Card>
@@ -20,7 +12,7 @@ export function CategoryProgress({ data }: CategoryProgressProps) {
         <CardTitle>Categories</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {data.map((item, index) => (
+        {data.map((item) => (
           <div key={item.category} className="space-y-1.5">
             <div className="flex items-center justify-between text-sm">
               <span className="font-medium text-zinc-800 dark:text-zinc-200">
@@ -33,8 +25,7 @@ export function CategoryProgress({ data }: CategoryProgressProps) {
             <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
               <div
                 className={cn(
-                  "h-full rounded-full transition-all",
-                  barColors[index % barColors.length],
+                  "h-full rounded-full bg-gradient-to-r from-accent-500 to-accent-600 transition-all duration-700",
                 )}
                 style={{ width: `${item.percentage}%` }}
               />
