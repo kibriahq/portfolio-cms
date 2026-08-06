@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { FolderOpen, Pencil, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -5,12 +8,29 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import type { Category } from "@/types/category";
 import Link from "next/link";
+import { deleteCategory } from "@/actions/categories";
+import { toast } from "react-toastify";
 
 interface CategoriesTableProps {
   categories: Category[];
 }
 
 export function CategoriesTable({ categories }: CategoriesTableProps) {
+  const router = useRouter();
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this category? This action cannot be undone.")) {
+      return;
+    }
+    try {
+      await deleteCategory(id);
+      toast.success("Category deleted successfully");
+      router.refresh();
+    } catch (error) {
+      toast.error("Failed to delete category");
+    }
+  };
+
   if (categories.length === 0) {
     return (
       <EmptyState
@@ -88,6 +108,7 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
                       aria-label={`Delete ${category.name}`}
                       title="Delete"
                       className="text-zinc-500 hover:bg-red-50 hover:text-red-600 dark:text-zinc-400 dark:hover:bg-red-500/10 dark:hover:text-red-400"
+                      onClick={() => handleDelete(category.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
