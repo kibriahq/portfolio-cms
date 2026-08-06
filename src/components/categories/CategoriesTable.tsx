@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { getPostCountByCategory } from "@/lib/utils";
 import type { Category } from "@/types/category";
+import Link from "next/link";
 
 interface CategoriesTableProps {
   categories: Category[];
@@ -70,19 +71,18 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
                 </td>
                 <td className="px-5 py-3 sm:px-6">
                   <Badge variant="neutral">
-                    {getPostCountByCategory(category.name)}
+                    {category._count.blogs}
                   </Badge>
                 </td>
                 <td className="px-5 py-3 sm:px-6">
                   <div className="flex items-center justify-end gap-1">
-                    <Button
-                      variant="ghost"
-                      size="icon"
+                    <Link
+                      href={`/categories/edit/${category.id}`}
                       aria-label={`Edit ${category.name}`}
-                      title="Edit"
+                      className="p-2.5 rounded-lg text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
                     >
                       <Pencil className="h-4 w-4" />
-                    </Button>
+                    </Link>
                     <Button
                       variant="ghost"
                       size="icon"

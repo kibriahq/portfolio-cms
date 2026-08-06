@@ -3,10 +3,10 @@ import { Plus } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { CategoriesClient } from "@/components/categories/CategoriesClient";
 import { Button } from "@/components/ui/Button";
-import { getCategories } from "@/lib/utils";
+import { getCategories } from "@/actions/categories";
 
-export default function CategoriesPage() {
-  const categories = getCategories();
+export default async function CategoriesPage() {
+  const categories = await getCategories();
 
   return (
     <>

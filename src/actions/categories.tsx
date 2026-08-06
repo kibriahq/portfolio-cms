@@ -3,7 +3,10 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getCategories() {
-  return prisma.category.findMany();
+  // fetch all categories with post count
+  return prisma.category.findMany({
+    include: { _count: { select: { blogs: true } } },
+  });
 }
 
 export async function createCategory(data: { name: string; slug: string; description?: string }) {
