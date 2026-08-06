@@ -3,7 +3,7 @@ export interface Category {
   name: string;
   slug: string;
   description?: string | null;
-  _count: {
+  _count?: {
     blogs: number;
   };
 }

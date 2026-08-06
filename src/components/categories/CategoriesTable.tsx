@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/Card";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { getPostCountByCategory } from "@/lib/utils";
 import type { Category } from "@/types/category";
 import Link from "next/link";
 
@@ -71,7 +70,7 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
                 </td>
                 <td className="px-5 py-3 sm:px-6">
                   <Badge variant="neutral">
-                    {category._count.blogs}
+                    {category?._count?.blogs}
                   </Badge>
                 </td>
                 <td className="px-5 py-3 sm:px-6">
