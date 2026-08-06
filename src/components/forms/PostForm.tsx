@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/Card";
 import { Button, buttonVariants } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import type { PostStatus } from "@/types/post";
+import { RichTextEditor } from "./RichTextEditor";
 
 const categories = [
   "Engineering",
@@ -78,13 +79,10 @@ export function PostForm() {
           </Field>
 
           <Field label="Content" htmlFor="content">
-            <textarea
-              id="content"
+            <RichTextEditor
               value={form.content}
-              onChange={(e) => update("content", e.target.value)}
+              onChange={(html) => update("content", html)}
               placeholder="Write your post content here..."
-              rows={14}
-              className={cn(inputClass, "font-mono text-sm leading-relaxed")}
             />
           </Field>
         </Card>
