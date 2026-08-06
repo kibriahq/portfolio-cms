@@ -7,6 +7,7 @@ import { CategoryBadge } from "@/components/posts/CategoryBadge";
 import { PostCover } from "@/components/posts/PostCover";
 import { formatDate, formatNumber } from "@/lib/utils";
 import type { Post } from "@/types/post";
+import Link from "next/link";
 
 interface PostsTableProps {
   posts: Post[];
@@ -58,10 +59,12 @@ export function PostsTable({ posts }: PostsTableProps) {
                     />
                     <div className="flex min-w-0 flex-col">
                       <span className="truncate font-medium text-zinc-900 dark:text-zinc-50">
-                        {post.title}
+                        {post.title.slice(0, 35)}{post.title.length > 35 ? <span className="text-zinc-400 dark:text-zinc-500">...</span> : ''}
                       </span>
                       <span className="text-xs text-zinc-400 dark:text-zinc-500">
-                        /{post.slug}
+                        <Link href={`https://kibria.dev/posts/${post.slug}`} target="_blank" className="hover:underline">
+                          /{post.slug.slice(0, 35)}{post.slug.length > 35 ? '...' : ''}
+                        </Link>
                       </span>
                     </div>
                   </div>
