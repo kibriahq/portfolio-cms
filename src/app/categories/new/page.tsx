@@ -20,7 +20,7 @@ export default function NewCategoryPage() {
         }
       />
 
-      <CategoryForm />
+      <CategoryForm type="create" category={null} />
     </>
   );
 }

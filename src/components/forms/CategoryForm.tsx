@@ -5,8 +5,9 @@ import { Save } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { toast } from "react-toastify";
-import { createCategory } from "@/actions/categories";
+import { createCategory, updateCategory } from "@/actions/categories";
 import { useRouter } from "next/navigation";
+import { Category } from "@/types/category";
 
 const emptyForm = {
   name: "",
@@ -22,8 +23,14 @@ function slugify(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-export function CategoryForm() {
-  const [form, setForm] = useState(emptyForm);
+export function CategoryForm({ type, category }: { type: "create" | "edit"; category: Category | null }) {
+  const cat = {
+    name: category?.name || "",
+    slug: category?.slug || "",
+    description: category?.description || "",
+  }
+
+  const [form, setForm] = useState(cat ?? emptyForm);
   const router = useRouter();
 
   function update<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
@@ -31,11 +38,21 @@ export function CategoryForm() {
   }
 
   function handleNameChange(value: string) {
-    setForm((prev) => ({
-      ...prev,
-      name: value,
-      slug: slugify(value),
-    }));
+    if (type === "create") {
+      setForm((prev) => ({
+        ...prev,
+        name: value,
+        slug: slugify(value),
+      }));
+    }
+
+    if (type === "edit") {
+      setForm((prev) => ({
+        ...prev,
+        name: value,
+        slug: form?.slug || slugify(value),
+      }));
+    }
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -46,8 +63,16 @@ export function CategoryForm() {
     }
 
     try {
-      await createCategory(form);
-      toast.success("Category saved successfully!");
+      if (type === "create") {
+        await createCategory(form);
+        toast.success("Category saved successfully!");
+      }
+
+      if (type === "edit" && category) {
+        await updateCategory(category.id, form);
+        toast.success("Category updated successfully!");
+      }
+
       setForm(emptyForm); // Reset form after submission
       router.push("/categories"); // Navigate to categories page after submission
     } catch (error) {
@@ -120,7 +145,7 @@ export function CategoryForm() {
         <div className="flex flex-col gap-2">
           <Button type="submit">
             <Save className="h-4 w-4" />
-            Save Category
+            {type === "create" ? "Create Category" : "Update Category"}
           </Button>
         </div>
       </div>
