@@ -1,5 +1,7 @@
 import { posts } from "@/data/posts";
+import { categories } from "@/data/categories";
 import type { Post, PostStatus } from "@/types/post";
+import type { Category } from "@/types/category";
 
 export function cn(...classes: Array<string | false | null | undefined>): string {
   return classes.filter(Boolean).join(" ");
@@ -67,6 +69,14 @@ export function getCategoryBreakdown(posts: Post[]): Array<{
       percentage: Math.round((count / total) * 100),
     }))
     .sort((a, b) => b.count - a.count);
+}
+
+export function getCategories(): Category[] {
+  return categories;
+}
+
+export function getPostCountByCategory(categoryName: string): number {
+  return posts.filter((post) => post.category === categoryName).length;
 }
 
 export const STATUS_LABELS: Record<PostStatus, string> = {
