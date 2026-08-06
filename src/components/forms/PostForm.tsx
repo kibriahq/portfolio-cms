@@ -22,7 +22,10 @@ const emptyForm = {
   excerpt: "",
   content: "",
   status: "draft" as PostStatus,
+  readingTime: "",
   tags: "",
+  metaTitle: "",
+  metaDescription: "",
 };
 
 export function PostForm() {
@@ -140,6 +143,39 @@ export function PostForm() {
             />
           </Field>
 
+          <Field label="Meta Title" htmlFor="metaTitle">
+            <input
+              id="metaTitle"
+              value={form.metaTitle}
+              onChange={(e) => update("metaTitle", e.target.value)}
+              placeholder="SEO title for search engines"
+              className={inputClass}
+            />
+          </Field>
+
+          <Field label="Meta Description" htmlFor="metaDescription">
+            <textarea
+              id="metaDescription"
+              value={form.metaDescription}
+              onChange={(e) => update("metaDescription", e.target.value)}
+              placeholder="SEO description for search engines"
+              rows={3}
+              className={inputClass}
+            />
+          </Field>
+
+          <Field label="Reading Time" htmlFor="readingTime">
+            <input
+              id="readingTime"
+              type="number"
+              min={0}
+              value={form.readingTime}
+              onChange={(e) => update("readingTime", e.target.value)}
+              placeholder="e.g., 5 min"
+              className={inputClass}
+            />
+          </Field>
+
           <Field label="Tags" htmlFor="tags">
             <input
               id="tags"
@@ -165,21 +201,8 @@ export function PostForm() {
             Save Draft
           </Button>
         </div>
-
-        <LinkBack />
       </div>
     </form>
-  );
-}
-
-function LinkBack() {
-  return (
-    <a
-      href="/posts"
-      className={cn(buttonVariants({ variant: "ghost" }), "w-full")}
-    >
-      Cancel
-    </a>
   );
 }
 
