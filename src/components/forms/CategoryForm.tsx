@@ -4,6 +4,9 @@ import { useState } from "react";
 import { Save } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { toast } from "react-toastify";
+import { createCategory } from "@/actions/categories";
+import { useRouter } from "next/navigation";
 
 const emptyForm = {
   name: "",
@@ -21,6 +24,7 @@ function slugify(value: string): string {
 
 export function CategoryForm() {
   const [form, setForm] = useState(emptyForm);
+  const router = useRouter();
 
   function update<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -30,13 +34,30 @@ export function CategoryForm() {
     setForm((prev) => ({
       ...prev,
       name: value,
-      slug: prev.slug || slugify(value),
+      slug: slugify(value),
     }));
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!form.name || !form.slug) {
+      toast.error("Name and slug are required.");
+      return;
+    }
+
+    try {
+      await createCategory(form);
+      toast.success("Category saved successfully!");
+      setForm(emptyForm); // Reset form after submission
+      router.push("/categories"); // Navigate to categories page after submission
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An error occurred while saving the category.");
+    }
   }
 
   return (
     <form
-      onSubmit={(event) => event.preventDefault()}
+      onSubmit={handleSubmit}
       className="grid grid-cols-1 gap-6 lg:grid-cols-3"
     >
       <div className="space-y-6 lg:col-span-2">
@@ -48,6 +69,7 @@ export function CategoryForm() {
               onChange={(e) => handleNameChange(e.target.value)}
               placeholder="e.g., Engineering"
               className={inputClass}
+              required
             />
           </Field>
 
@@ -58,6 +80,7 @@ export function CategoryForm() {
               onChange={(e) => update("slug", slugify(e.target.value))}
               placeholder="engineering"
               className={inputClass}
+              required
             />
           </Field>
 
