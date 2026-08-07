@@ -8,20 +8,13 @@ import { toast } from "react-toastify";
 import { createCategory, updateCategory } from "@/actions/categories";
 import { useRouter } from "next/navigation";
 import { Category } from "@/types/category";
+import slugify from "@/utils/slugify";
 
 const emptyForm = {
   name: "",
   slug: "",
   description: "",
 };
-
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
 
 export function CategoryForm({ type, category }: { type: "create" | "edit"; category: Category | null }) {
   const cat = {
@@ -83,9 +76,9 @@ export function CategoryForm({ type, category }: { type: "create" | "edit"; cate
   return (
     <form
       onSubmit={handleSubmit}
-      className="grid grid-cols-1 gap-6 lg:grid-cols-3"
+      className="grid grid-cols-1 gap-6 md:grid-cols-3"
     >
-      <div className="space-y-6 lg:col-span-2">
+      <div className="space-y-6 md:col-span-2">
         <Card className="space-y-5 p-5 sm:p-6">
           <Field label="Name" htmlFor="name">
             <input
