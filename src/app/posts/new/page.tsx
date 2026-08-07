@@ -3,8 +3,11 @@ import { ArrowLeft } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PostForm } from "@/components/forms/PostForm";
 import { Button } from "@/components/ui/Button";
+import { getCategories } from "@/actions/categories";
 
-export default function NewPostPage() {
+export default async function NewPostPage() {
+  const categories = await getCategories();
+  
   return (
     <>
       <PageHeader
@@ -20,7 +23,7 @@ export default function NewPostPage() {
         }
       />
 
-      <PostForm />
+      <PostForm type="create" categories={categories} />
     </>
   );
 }

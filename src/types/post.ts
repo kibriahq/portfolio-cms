@@ -33,8 +33,7 @@ export interface PostInput {
   categoryId: string;
   excerpt: string;
   status: PostStatus;
-  createdAt: string;
-  updatedAt: string;
+  readingTime: number;
   tags?: string;
   coverImage?: string;
   content: string;

@@ -12,6 +12,8 @@ export async function getPostById(id: string) {
 }
 
 export async function createPost(data: PostInput) {
+  data.coverImage = undefined; // Set coverImage to undefined if not provided
+  data.readingTime = Number(data.readingTime); // Convert readingTime to a number
   return prisma.blog.create({ data });
 }
 
