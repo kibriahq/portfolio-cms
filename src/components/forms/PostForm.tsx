@@ -63,7 +63,7 @@ export function PostForm({ type, categories }: { type: "create" | "edit", catego
     } catch (error) {
       console.log(error);
       
-      toast.error("An error occurred while submitting the form. Please try again.");
+      toast.error(error instanceof Error ? error.message : "An error occurred while submitting the form. Please try again.");
     }
   }
 

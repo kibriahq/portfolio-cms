@@ -28,28 +28,29 @@ enum PageType {
 }
 
 model Blog {
-  id              String    @id @default(cuid())
+  id String @id @default(cuid())
 
-  title           String
-  slug            String     @unique
-  excerpt         String?    @db.Text
-  content         String     @db.Text
-  coverImage      String?
+  title              String
+  slug               String  @unique
+  excerpt            String? @db.Text
+  content            String  @db.Text
+  coverImage         String?
+  coverImagePublicId String?
 
-  metaTitle       String?
-  metaDescription String?    @db.Text
+  metaTitle          String?
+  metaDescription    String? @db.Text
 
-  status          BlogStatus @default(PUBLISHED)
-  readingTime     Int?
-  tags            String?
+  status             BlogStatus @default(PUBLISHED)
+  readingTime        Int?
+  tags               String?
 
-  categoryId      String?
-  category        Category?  @relation(fields: [categoryId], references: [id])
+  categoryId         String?
+  category           Category? @relation(fields: [categoryId], references: [id])
 
-  views          View[]
-  
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  views              View[]
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model Category {
@@ -58,23 +59,23 @@ model Category {
   slug        String  @unique
   description String? @db.Text
 
-  blogs Blog[]
+  blogs       Blog[]
 
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
 }
 
 model View {
-  id         String @id @default(cuid())
+  id        String @id @default(cuid())
 
-  pageType   PageType?
+  pageType  PageType?
 
-  blogId     String?
-  blog       Blog? @relation(fields: [blogId], references: [id])
+  blogId    String?
+  blog      Blog?   @relation(fields: [blogId], references: [id])
 
-  ip         String?
-  userAgent  String?
-  location   String?
-  referer    String?
+  ip        String?
+  userAgent String?
+  location  String?
+  referer   String?
 
-  viewedAt   DateTime @default(now())
+  viewedAt  DateTime @default(now())
 }
