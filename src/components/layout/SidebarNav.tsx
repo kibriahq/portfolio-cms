@@ -8,28 +8,47 @@ import {
   FolderOpen,
   LayoutDashboard,
   PenLine,
+  ShieldCheck,
   UserCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { UserRole } from "@/types/user";
 
-const navItems = [
+type NavItem = {
+  label: string;
+  href: string;
+  icon: typeof LayoutDashboard;
+  roles?: UserRole[];
+};
+
+const navItems: NavItem[] = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
   { label: "Posts / Blog", href: "/posts", icon: FileText },
   { label: "Categories", href: "/categories", icon: FolderOpen },
   { label: "Overview", href: "/overview", icon: BarChart3 },
+  {
+    label: "Admins",
+    href: "/admins",
+    icon: ShieldCheck,
+    roles: ["SUPER_ADMIN", "ADMIN"],
+  },
   { label: "Profile", href: "/profile", icon: UserCircle },
 ];
 
 interface SidebarNavProps {
   onNavigate?: () => void;
+  role?: UserRole;
 }
 
-export function SidebarNav({ onNavigate }: SidebarNavProps) {
+export function SidebarNav({ onNavigate, role }: SidebarNavProps) {
   const pathname = usePathname();
+  const visibleItems = navItems.filter(
+    (item) => !item.roles || (role ? item.roles.includes(role) : false),
+  );
 
   return (
     <nav className="flex flex-col gap-1 px-3">
-      {navItems.map((item) => {
+      {visibleItems.map((item) => {
         const isActive =
           item.href === "/"
             ? pathname === "/"

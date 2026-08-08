@@ -29,7 +29,7 @@ export function Navbar({ user }: { user?: AuthUser }) {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-zinc-200 bg-white/80 px-4 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/80 sm:px-6 lg:px-8">
       <div className="flex items-center gap-3">
-        <MobileNav />
+        <MobileNav role={user?.role} />
         <div className="lg:hidden">
           <Brand />
         </div>

@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Brand, SidebarNav } from "@/components/layout/SidebarNav";
+import type { UserRole } from "@/types/user";
 
-export function MobileNav() {
+export function MobileNav({ role }: { role?: UserRole }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -38,7 +39,7 @@ export function MobileNav() {
               </button>
             </div>
             <div className="flex-1 overflow-y-auto py-4">
-              <SidebarNav onNavigate={() => setOpen(false)} />
+              <SidebarNav role={role} onNavigate={() => setOpen(false)} />
             </div>
           </div>
         </div>

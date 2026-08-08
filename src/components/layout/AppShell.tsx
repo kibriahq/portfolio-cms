@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Navbar } from "@/components/layout/Navbar";
+import type { UserRole } from "@/types/user";
 
 export type AuthUser = {
   name?: string | null;
   email?: string | null;
   image?: string | null;
+  role?: UserRole;
 };
 
 export function AppShell({
@@ -17,7 +19,7 @@ export function AppShell({
 }) {
   return (
     <div className="min-h-full">
-      <Sidebar />
+      <Sidebar role={user?.role} />
       <div className="flex min-h-full flex-col lg:pl-64">
         <Navbar user={user} />
         <main className="relative flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
