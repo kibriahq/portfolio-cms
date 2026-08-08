@@ -36,7 +36,8 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
   // on change title, update slug automatically if type is create
   const title = watch("title")
   const slug = watch("slug")
-
+  const content = watch("content") ?? "";
+  
   useEffect(() => {
     if (type === "create" && title) {
       setValue("slug", slugify(title), {
@@ -54,6 +55,16 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
       });
     }
   }, [title, slug, type, setValue]);
+
+  useEffect(() => {
+      const words = content.split(/\s+/).filter(Boolean).length;
+      const readingTime = Math.ceil(words / 200); // Assuming 200 words per minute
+      
+      setValue("readingTime", readingTime, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+  }, [content, type, setValue]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
    if(type === "create") {
@@ -254,7 +265,7 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
         <div className="flex flex-col gap-2">
           <Button type="submit" onClick={() => setValue('status', 'PUBLISHED')}>
             <Eye className="h-4 w-4" />
-            Update & Publish
+            {type === "create" ? "Publish" : "Update & Publish"}
           </Button>
           <Button type="submit" onClick={() => setValue('status', 'DRAFT')} variant="secondary">
             <Save className="h-4 w-4" />
