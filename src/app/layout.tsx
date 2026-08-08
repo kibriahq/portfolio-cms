@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { AppShell } from "@/components/layout/AppShell";
 import { ToastContainer } from "react-toastify";
+import { Providers } from "@/app/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,7 +45,7 @@ export default function RootLayout(props: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-full">
-        <AppShell>{props.children}</AppShell>
+        <Providers>{props.children}</Providers>
         <ToastContainer />
       </body>
     </html>

@@ -6,24 +6,32 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.11.3",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
     "@tiptap/extension-placeholder": "^3.29.2",
     "@tiptap/pm": "^3.29.2",
     "@tiptap/react": "^3.29.2",
     "@tiptap/starter-kit": "^3.29.2",
+    "bcryptjs": "^3.0.3",
     "cloudinary": "^2.10.0",
     "dotenv": "^17.4.2",
     "lucide-react": "^1.28.0",
     "next": "16.3.0",
+    "next-auth": "5.0.0-beta.32",
     "prisma": "^7.9.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-hook-form": "^7.84.0",
-    "react-toastify": "^11.1.0"
+    "react-toastify": "^11.1.0",
+    "tsx": "^4.23.11"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
