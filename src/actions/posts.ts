@@ -66,7 +66,57 @@ export async function createPost(data: PostInput) {
 }
 
 export async function updatePost(id: string, data: PostInput) {
-  return prisma.blog.update({ where: { id }, data });
+  // check is slug already exists, dont check for the current post
+  const existingPost = await prisma.blog.findFirst({
+    where: {
+      slug: data.slug,
+      NOT: {
+        id: id,
+      },
+    },
+  });
+
+  if (existingPost) {
+    throw new Error("A post with this slug already exists.");
+  }
+
+  const post: PostInput & { coverImagePublicId?: string } = { ...data };
+  const oldPost = await prisma.blog.findUnique({ where: { id } });
+
+   if (!oldPost) {
+    throw new Error("Post not found.");
+  }
+
+  // Upload the cover image if provided
+  if (data.coverImage) {
+    
+    try {
+      const uploadedImage = await uploadImage(
+        data.coverImage[0] as unknown as File,
+        "blogs",
+      );
+      post.coverImage = uploadedImage.secure_url; // Use the secure URL from Cloudinary
+      post.coverImagePublicId = uploadedImage.public_id; // Store the public ID for future reference
+
+      // delete image from cloudinary if exists
+
+      if (oldPost?.coverImagePublicId) {
+        await deleteImage(oldPost.coverImagePublicId);
+      }
+    } catch (error) {
+      throw new Error(
+        error instanceof Error
+          ? error.message
+          : "An error occurred while uploading the image. Please try again.",
+      );
+    }
+  } else {
+    post.coverImage = oldPost?.coverImage ?? undefined; 
+    post.coverImagePublicId = oldPost?.coverImagePublicId ?? undefined;
+  }
+  post.readingTime = Number(data.readingTime);
+
+  return prisma.blog.update({ where: { id }, data: post });
 }
 
 export async function deletePost(id: string) {
@@ -78,10 +128,12 @@ export async function deletePost(id: string) {
       await deleteImage(post.coverImagePublicId);
     } catch (error) {
       throw Error(
-        error instanceof Error ? error.message : "while deleting the image from Cloudinary"
+        error instanceof Error
+          ? error.message
+          : "while deleting the image from Cloudinary",
       );
     }
   }
-  
+
   return prisma.blog.delete({ where: { id } });
 }

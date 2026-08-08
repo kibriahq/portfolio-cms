@@ -10,7 +10,7 @@ import { Category } from "@/types/category";
 import slugify from "@/utils/slugify";
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import { toast } from "react-toastify";
-import { createPost } from "@/actions/posts";
+import { createPost, updatePost } from "@/actions/posts";
 import { useRouter } from "next/navigation";
 
 
@@ -28,8 +28,8 @@ type Inputs = {
   metaDescription: string
 };
 
-export function PostForm({ type, categories }: { type: "create" | "edit", categories: Category[] }) {
-  const { control, register, handleSubmit, watch, setValue, formState: { errors } } = useForm<Inputs>()
+export function PostForm({ type, categories, post }: { type: "create" | "edit", categories: Category[], post?: Inputs & { id: string } }) {
+  const { control, register, handleSubmit, watch, setValue, formState: { errors } } = useForm<Inputs>({ defaultValues: post ? {...post, coverImage: ""} : undefined });
 
   const router = useRouter();
 
@@ -56,14 +56,28 @@ export function PostForm({ type, categories }: { type: "create" | "edit", catego
   }, [title, slug, type, setValue]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      await createPost(data);
-      router.push("/posts");
-      toast.success("Post created successfully!");
-    } catch (error) {
-      console.log(error);
-      
-      toast.error(error instanceof Error ? error.message : "An error occurred while submitting the form. Please try again.");
+   if(type === "create") {
+      try {
+        await createPost(data);
+        toast.success("Post created successfully");
+        router.push("/posts");
+      } catch (error) {
+        toast.error(
+          error instanceof Error ? error.message : "An error occurred while creating the post"
+        );
+      }
+    } 
+    
+    if(type === "edit" && post?.id) {
+      try {
+        await updatePost(post.id, data);
+        toast.success("Post updated successfully");
+        router.push("/posts");
+      } catch (error) {
+        toast.error(
+          error instanceof Error ? error.message : "An error occurred while updating the post"
+        );
+      }
     }
   }
 
@@ -240,7 +254,7 @@ export function PostForm({ type, categories }: { type: "create" | "edit", catego
         <div className="flex flex-col gap-2">
           <Button type="submit" onClick={() => setValue('status', 'PUBLISHED')}>
             <Eye className="h-4 w-4" />
-            Publish
+            Update & Publish
           </Button>
           <Button type="submit" onClick={() => setValue('status', 'DRAFT')} variant="secondary">
             <Save className="h-4 w-4" />
