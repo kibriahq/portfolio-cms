@@ -27,12 +27,12 @@ const navItems: NavItem[] = [
   { label: "Categories", href: "/categories", icon: FolderOpen },
   { label: "Overview", href: "/overview", icon: BarChart3 },
   {
-    label: "Admins",
+    label: "All Admins",
     href: "/admins",
     icon: ShieldCheck,
     roles: ["SUPER_ADMIN", "ADMIN"],
   },
-  { label: "Profile", href: "/profile", icon: UserCircle },
+  { label: "My Profile", href: "/profile", icon: UserCircle },
 ];
 
 interface SidebarNavProps {
