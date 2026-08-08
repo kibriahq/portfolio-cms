@@ -8,6 +8,7 @@ import {
   FolderOpen,
   LayoutDashboard,
   PenLine,
+  UserCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +17,7 @@ const navItems = [
   { label: "Posts / Blog", href: "/posts", icon: FileText },
   { label: "Categories", href: "/categories", icon: FolderOpen },
   { label: "Overview", href: "/overview", icon: BarChart3 },
+  { label: "Profile", href: "/profile", icon: UserCircle },
 ];
 
 interface SidebarNavProps {
