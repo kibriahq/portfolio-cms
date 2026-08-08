@@ -11,24 +11,29 @@ import { AnalyticsCard } from "@/components/overview/AnalyticsCard";
 import { ActivityList } from "@/components/overview/ActivityList";
 import { PopularPosts } from "@/components/overview/PopularPosts";
 import { CategoryProgress } from "@/components/overview/CategoryProgress";
-import { activity, posts } from "@/data/posts";
+import { activity } from "@/data/posts";
 import {
   getCategoryBreakdown,
   getPopularPosts,
   getPostsSummary,
 } from "@/lib/utils";
+import { getTotalViews } from "@/actions/views";
+import { getPosts } from "@/actions/posts";
 
-export default function OverviewPage() {
-  const summary = getPostsSummary(posts);
+export default async function OverviewPage() {
+  const totalViews = await getTotalViews();
+  const posts = await getPosts();
+
+  const summary = await getPostsSummary(posts);
   const categoryBreakdown = getCategoryBreakdown(posts);
   const uniqueCategories = categoryBreakdown.length;
   const popular = getPopularPosts(posts, 5);
-  const monthlyViews = Math.round(summary.totalViews * 0.34);
+  const monthlyViews = Math.round(totalViews * 0.34);
 
   return (
     <>
       <PageHeader
-        title="Overview"
+        title="Analytics"
         description="A high-level snapshot of your site performance and content."
       />
 
@@ -64,7 +69,7 @@ export default function OverviewPage() {
         />
         <AnalyticsCard
           label="Total Views"
-          value={summary.totalViews.toLocaleString("en-US")}
+          value={totalViews.toLocaleString("en-US")}
           icon={Eye}
           accent="default"
           delta="+12.4%"

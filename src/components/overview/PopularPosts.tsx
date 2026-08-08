@@ -22,7 +22,7 @@ export function PopularPosts({ posts }: PopularPostsProps) {
     );
   }
 
-  const max = Math.max(...posts.map((post) => post.views), 1);
+  const max = Math.max(...posts.map((post) => post._count.views), 1);
 
   return (
     <Card>
@@ -31,7 +31,7 @@ export function PopularPosts({ posts }: PopularPostsProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         {posts.map((post, index) => {
-          const percentage = Math.round((post.views / max) * 100);
+          const percentage = Math.round((post._count.views / max) * 100);
           return (
             <div key={post.id} className="space-y-1.5">
               <div className="flex items-center justify-between gap-3">
@@ -45,7 +45,7 @@ export function PopularPosts({ posts }: PopularPostsProps) {
                 </div>
                 <span className="inline-flex shrink-0 items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400">
                   <Eye className="h-3.5 w-3.5" />
-                  {formatNumber(post.views)}
+                  {formatNumber(post._count.views)}
                 </span>
               </div>
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">

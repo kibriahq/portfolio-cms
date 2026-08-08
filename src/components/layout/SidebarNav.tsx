@@ -25,7 +25,7 @@ const navItems: NavItem[] = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
   { label: "Posts / Blog", href: "/posts", icon: FileText },
   { label: "Categories", href: "/categories", icon: FolderOpen },
-  { label: "Overview", href: "/overview", icon: BarChart3 },
+  { label: "Analytics", href: "/analytics", icon: BarChart3 },
   {
     label: "All Admins",
     href: "/admins",
