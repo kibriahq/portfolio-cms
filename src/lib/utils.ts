@@ -40,15 +40,15 @@ export function getPostBySlug(slug: string): Post | undefined {
 
 export function getPostsSummary(posts: Post[]) {
   const total = posts.length;
-  const published = posts.filter((post) => post.status === "published").length;
-  const drafts = posts.filter((post) => post.status === "draft").length;
-  const totalViews = posts.reduce((sum, post) => sum + post.views, 0);
+  const published = posts.filter((post) => post.status === "PUBLISHED").length;
+  const drafts = posts.filter((post) => post.status === "DRAFT").length;
+  const totalViews = posts.reduce((sum, post) => sum + post._count.views, 0);
   return { total, published, drafts, totalViews };
 }
 
 export function getPopularPosts(posts: Post[], limit = 5): Post[] {
   return [...posts]
-    .sort((a, b) => b.views - a.views)
+    .sort((a, b) => b._count.views - a._count.views)
     .slice(0, limit);
 }
 
@@ -60,7 +60,8 @@ export function getCategoryBreakdown(posts: Post[]): Array<{
   const total = posts.length || 1;
   const map = new Map<string, number>();
   for (const post of posts) {
-    map.set(post.category, (map.get(post.category) ?? 0) + 1);
+    const categoryName = post.category?.name ?? "Uncategorized";
+    map.set(categoryName, (map.get(categoryName) ?? 0) + 1);
   }
   return Array.from(map.entries())
     .map(([category, count]) => ({
@@ -76,7 +77,7 @@ export function getCategories(): Category[] {
 }
 
 export function getPostCountByCategory(categoryName: string): number {
-  return posts.filter((post) => post.category === categoryName).length;
+  return posts.filter((post) => post.category?.name === categoryName).length;
 }
 
 export const STATUS_LABELS: Record<PostStatus, string> = {
