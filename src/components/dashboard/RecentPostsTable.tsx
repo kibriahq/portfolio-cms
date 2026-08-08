@@ -73,7 +73,7 @@ export function RecentPostsTable({ posts, limit = 5 }: RecentPostsTableProps) {
                 <td className="px-5 py-3 text-right sm:px-6">
                   <span className="inline-flex items-center justify-end gap-1 text-zinc-700 dark:text-zinc-300">
                     <Eye className="h-3.5 w-3.5 text-zinc-400" />
-                    {formatNumber(post.views)}
+                    {formatNumber(post._count.views)}
                   </span>
                 </td>
               </tr>

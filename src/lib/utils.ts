@@ -38,12 +38,12 @@ export function getPostBySlug(slug: string): Post | undefined {
   return posts.find((post) => post.slug === slug);
 }
 
-export function getPostsSummary(posts: Post[]) {
+export async function getPostsSummary(posts: Post[]) {
   const total = posts.length;
   const published = posts.filter((post) => post.status === "PUBLISHED").length;
   const drafts = posts.filter((post) => post.status === "DRAFT").length;
-  const totalViews = posts.reduce((sum, post) => sum + post._count.views, 0);
-  return { total, published, drafts, totalViews };
+
+  return { total, published, drafts};
 }
 
 export function getPopularPosts(posts: Post[], limit = 5): Post[] {

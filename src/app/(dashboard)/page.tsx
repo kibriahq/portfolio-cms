@@ -2,11 +2,14 @@ import { Eye, FileEdit, FileText, Upload } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { RecentPostsTable } from "@/components/dashboard/RecentPostsTable";
-import { getPosts, getPostsSummary } from "@/lib/utils";
+import { getPostsSummary } from "@/lib/utils";
+import { getPosts } from "@/actions/posts";
+import { getTotalViews } from "@/actions/views";
 
-export default function DashboardPage() {
-  const posts = getPosts();
-  const { total, drafts, published, totalViews } = getPostsSummary(posts);
+export default async function DashboardPage() {
+  const totalViews = await getTotalViews();
+  const posts = await getPosts();
+  const { total, drafts, published } = await getPostsSummary(posts);
 
   return (
     <>
@@ -42,7 +45,7 @@ export default function DashboardPage() {
           value={totalViews.toLocaleString("en-US")}
           icon={Eye}
           accent="info"
-          hint="All time"
+          hint="All time all pages and posts"
         />
       </div>
 
