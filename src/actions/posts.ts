@@ -5,7 +5,24 @@ import { PostInput } from "@/types/post";
 import { uploadImage } from "./upload";
 
 export async function getPosts() {
-  return prisma.blog.findMany();
+  return prisma.blog.findMany({
+    include: {
+      category: {
+        select: {
+          name: true,
+          id: true,
+        },
+      },
+      _count: {
+        select: {
+          views: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 }
 
 export async function getPostById(id: string) {
@@ -28,6 +45,7 @@ export async function createPost(data: PostInput) {
     try {
       const uploadedImage = await uploadImage(
         data.coverImage[0] as unknown as File,
+        "blogs",
       );
       post.coverImage = uploadedImage.secure_url; // Use the secure URL from Cloudinary
       post.coverImagePublicId = uploadedImage.public_id; // Store the public ID for future reference

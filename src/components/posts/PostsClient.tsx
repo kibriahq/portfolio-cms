@@ -19,8 +19,8 @@ export function PostsClient({ posts }: PostsClientProps) {
       return (
         post.title.toLowerCase().includes(q) ||
         post.slug.toLowerCase().includes(q) ||
-        post.category.toLowerCase().includes(q) ||
-        post.tags.some((tag) => tag.toLowerCase().includes(q))
+        post.category?.name.toLowerCase().includes(q) ||
+        post.tags?.split(',').some((tag) => tag.trim().toLowerCase().includes(q))
       );
     });
   }, [posts, query]);

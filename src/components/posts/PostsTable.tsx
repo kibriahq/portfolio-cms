@@ -23,7 +23,8 @@ export function PostsTable({ posts }: PostsTableProps) {
       />
     );
   }
-
+  console.log(posts);
+  
   return (
     <Card className="overflow-hidden">
       <div className="overflow-x-auto">
@@ -73,13 +74,13 @@ export function PostsTable({ posts }: PostsTableProps) {
                   <StatusBadge status={post.status} />
                 </td>
                 <td className="hidden px-5 py-3 sm:px-6 md:table-cell">
-                  <CategoryBadge category={post.category} />
+                  <CategoryBadge category={post.category?.name} />
                 </td>
                 <td className="hidden whitespace-nowrap px-5 py-3 text-zinc-500 dark:text-zinc-400 sm:px-6 lg:table-cell">
                   {formatDate(post.createdAt)}
                 </td>
                 <td className="px-5 py-3 text-right text-zinc-700 dark:text-zinc-300 sm:px-6">
-                  {formatNumber(post.views)}
+                  {formatNumber(post._count.views)}
                 </td>
                 <td className="px-5 py-3 sm:px-6">
                   <div className="flex items-center justify-end gap-1">

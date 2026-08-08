@@ -3,10 +3,10 @@ import { Plus } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PostsClient } from "@/components/posts/PostsClient";
 import { Button } from "@/components/ui/Button";
-import { getPosts } from "@/lib/utils";
+import { getPosts } from "@/actions/posts";
 
-export default function PostsPage() {
-  const posts = getPosts();
+export default async function PostsPage() {
+  const posts = await getPosts();
 
   return (
     <>

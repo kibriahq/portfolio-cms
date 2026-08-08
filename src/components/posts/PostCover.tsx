@@ -2,7 +2,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface PostCoverProps {
-  src?: string;
+  src?: string | null;
   title: string;
   className?: string;
 }

@@ -7,7 +7,7 @@ export function cn(...classes: Array<string | false | null | undefined>): string
   return classes.filter(Boolean).join(" ");
 }
 
-export function formatDate(value: string): string {
+export function formatDate(value: string | Date): string {
   const date = new Date(value);
   return date.toLocaleDateString("en-US", {
     year: "numeric",
@@ -80,6 +80,7 @@ export function getPostCountByCategory(categoryName: string): number {
 }
 
 export const STATUS_LABELS: Record<PostStatus, string> = {
-  draft: "Draft",
-  published: "Published",
+  DRAFT: "Draft",
+  PUBLISHED: "Published",
+  ARCHIVED: "Archived",
 };

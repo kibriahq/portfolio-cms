@@ -4,13 +4,20 @@ export interface Post {
   id: string;
   title: string;
   slug: string;
-  category: string;
-  excerpt: string;
+  category: {
+    id: string;
+    name: string;
+  } | null;
+  _count: {
+    views: number;
+  };
+  readingTime: number | null;
+  excerpt: string | null;
   status: PostStatus;
-  createdAt: string;
-  updatedAt: string;
-  tags: string;
-  coverImage?: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  tags: string | null;
+  coverImage?: string | null;
   content?: string;
 }
 
