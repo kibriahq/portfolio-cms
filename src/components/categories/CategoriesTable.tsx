@@ -95,13 +95,16 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
                 </td>
                 <td className="px-5 py-3 sm:px-6">
                   <div className="flex items-center justify-end gap-1">
-                    <Link
-                      href={`/categories/edit/${category.id}`}
-                      aria-label={`Edit ${category.name}`}
-                      className="p-2.5 rounded-lg text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50"
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={`Delete ${category.name}`}
+                      title="Delete"
+                      className="text-zinc-500 hover:bg-red-50 hover:text-red-600 dark:text-zinc-400 dark:hover:bg-red-500/10 dark:hover:text-red-400"
+                      onClick={() => router.push(`/categories/edit/${category.id}`)}
                     >
                       <Pencil className="h-4 w-4" />
-                    </Link>
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon"
