@@ -48,3 +48,19 @@ export async function uploadImage(
 
   return result;
 }
+
+export async function deleteImage(publicId: string): Promise<void> {
+  if (!publicId) {
+    throw new Error("Public ID is required");
+  }
+
+  await new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(publicId, (error, result) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(result);
+    });
+  });
+}

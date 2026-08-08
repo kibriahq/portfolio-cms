@@ -8,12 +8,32 @@ import { PostCover } from "@/components/posts/PostCover";
 import { formatDate, formatNumber } from "@/lib/utils";
 import type { Post } from "@/types/post";
 import Link from "next/link";
+import { deletePost } from "@/actions/posts";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface PostsTableProps {
   posts: Post[];
 }
 
 export function PostsTable({ posts }: PostsTableProps) {
+  const router = useRouter();
+
+  const handleDelete = async (postId: string) => {
+    if (!confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+      return;
+    }
+    try {
+      await deletePost(postId);
+      toast.success("Post deleted successfully");
+      router.refresh();
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "An error occurred while deleting the post"
+      );
+    }
+  }
+
   if (posts.length === 0) {
     return (
       <EmptyState
@@ -23,8 +43,7 @@ export function PostsTable({ posts }: PostsTableProps) {
       />
     );
   }
-  console.log(posts);
-  
+
   return (
     <Card className="overflow-hidden">
       <div className="overflow-x-auto">
@@ -98,6 +117,7 @@ export function PostsTable({ posts }: PostsTableProps) {
                       aria-label={`Delete ${post.title}`}
                       title="Delete"
                       className="text-zinc-500 hover:bg-red-50 hover:text-red-600 dark:text-zinc-400 dark:hover:bg-red-500/10 dark:hover:text-red-400"
+                      onClick={() => handleDelete(post.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

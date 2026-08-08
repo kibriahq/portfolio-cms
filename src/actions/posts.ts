@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { PostInput } from "@/types/post";
-import { uploadImage } from "./upload";
+import { deleteImage, uploadImage } from "./upload";
 
 export async function getPosts() {
   return prisma.blog.findMany({
@@ -70,5 +70,18 @@ export async function updatePost(id: string, data: PostInput) {
 }
 
 export async function deletePost(id: string) {
+  // delete image from cloudinary if exists
+  const post = await prisma.blog.findUnique({ where: { id } });
+
+  if (post?.coverImagePublicId) {
+    try {
+      await deleteImage(post.coverImagePublicId);
+    } catch (error) {
+      throw Error(
+        error instanceof Error ? error.message : "while deleting the image from Cloudinary"
+      );
+    }
+  }
+  
   return prisma.blog.delete({ where: { id } });
 }
