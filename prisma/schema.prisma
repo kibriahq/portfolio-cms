@@ -13,8 +13,10 @@ datasource db {
 }
 
 enum UserRole {
+  SUPER_ADMIN
   ADMIN
   EDITOR
+  REJECTED
 }
 
 enum Status {
