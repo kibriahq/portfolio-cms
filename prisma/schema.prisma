@@ -16,7 +16,7 @@ enum UserRole {
   SUPER_ADMIN
   ADMIN
   EDITOR
-  REJECTED
+  DISABLED
 }
 
 enum Status {

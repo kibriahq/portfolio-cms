@@ -8,14 +8,14 @@ const ROLE_VARIANTS: Record<
   SUPER_ADMIN: "info",
   ADMIN: "success",
   EDITOR: "warning",
-  REJECTED: "danger",
+  DISABLED: "danger",
 };
 
 const ROLE_DOTS: Record<UserRole, string> = {
   SUPER_ADMIN: "bg-blue-500",
   ADMIN: "bg-emerald-500",
   EDITOR: "bg-amber-500",
-  REJECTED: "bg-red-500",
+  DISABLED: "bg-red-500",
 };
 
 export function RoleBadge({ role }: { role: UserRole }) {

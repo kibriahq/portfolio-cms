@@ -22,14 +22,14 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   SUPER_ADMIN: "Super Admin",
   ADMIN: "Admin",
   EDITOR: "Editor",
-  REJECTED: "Rejected",
+  DISABLED: "Disabled",
 };
 
 export const ROLE_DESCRIPTIONS: Record<UserRole, string> = {
   SUPER_ADMIN: "Full access, including managing admins and their roles.",
   ADMIN: "Can manage posts, categories and everything content related.",
   EDITOR: "Can write and edit content, but cannot manage the workspace.",
-  REJECTED: "Access revoked. Keeps the account without any permissions.",
+  DISABLED: "Access revoked. Keeps the account without any permissions.",
 };
 
 /** Roles that can be picked when creating a new admin. */
@@ -40,7 +40,7 @@ export const ASSIGNABLE_ROLES: UserRole[] = [
   "SUPER_ADMIN",
   "ADMIN",
   "EDITOR",
-  "REJECTED",
+  "DISABLED",
 ];
 
 export function isUserRole(value: string): value is UserRole {
