@@ -7,7 +7,6 @@ import { CategoryBadge } from "@/components/posts/CategoryBadge";
 import { PostCover } from "@/components/posts/PostCover";
 import { formatDate, formatNumber } from "@/lib/utils";
 import type { Post } from "@/types/post";
-import Link from "next/link";
 import { deletePost } from "@/actions/posts";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -53,6 +52,9 @@ export function PostsTable({ posts }: PostsTableProps) {
               <th className="px-5 py-3 font-medium sm:px-6">Title</th>
               <th className="px-5 py-3 font-medium sm:px-6">Status</th>
               <th className="hidden px-5 py-3 font-medium sm:px-6 md:table-cell">
+                Featured
+              </th>
+              <th className="hidden px-5 py-3 font-medium sm:px-6 md:table-cell">
                 Category
               </th>
               <th className="hidden px-5 py-3 font-medium sm:px-6 lg:table-cell">
@@ -82,15 +84,22 @@ export function PostsTable({ posts }: PostsTableProps) {
                         {post.title.slice(0, 35)}{post.title.length > 35 ? <span className="text-zinc-400 dark:text-zinc-500">...</span> : ''}
                       </span>
                       <span className="text-xs text-zinc-400 dark:text-zinc-500">
-                        <Link href={`https://kibria.dev/posts/${post.slug}`} target="_blank" className="hover:underline">
-                          /{post.slug.slice(0, 35)}{post.slug.length > 35 ? '...' : ''}
-                        </Link>
+                        /{post.slug.slice(0, 35)}{post.slug.length > 35 ? '...' : ''}
                       </span>
                     </div>
                   </div>
                 </td>
                 <td className="px-5 py-3 sm:px-6">
                   <StatusBadge status={post.status} />
+                </td>
+                <td className="hidden px-5 py-3 sm:px-6 md:table-cell">
+                  {post.featured ? (
+                    <span className="inline-flex items-center rounded-full bg-accent-50 px-2 py-0.5 text-xs font-medium text-accent-700 dark:bg-accent-500/10 dark:text-accent-300">
+                      Featured
+                    </span>
+                  ) : (
+                    <span className="text-zinc-400 dark:text-zinc-500">—</span>
+                  )}
                 </td>
                 <td className="hidden px-5 py-3 sm:px-6 md:table-cell">
                   <CategoryBadge category={post.category?.name} />

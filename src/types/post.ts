@@ -19,6 +19,7 @@ export interface Post {
   tags: string | null;
   coverImage?: string | null;
   content?: string;
+  featured?: boolean;
 }
 
 export interface Activity {
