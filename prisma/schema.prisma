@@ -171,6 +171,9 @@ model CaseStudy {
   coverImage         String?
   coverImagePublicId String?
 
+  technologies       String[]         @default([])
+  tags               String[]         @default([])
+
   status             Status           @default(PUBLISHED)
   featured           Boolean          @default(false)
   displayOrder       Int              @default(0)
