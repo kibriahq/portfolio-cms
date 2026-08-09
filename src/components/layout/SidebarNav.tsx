@@ -24,7 +24,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", href: "/", icon: LayoutDashboard },
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Posts / Blog", href: "/posts", icon: FileText },
   { label: "Projects", href: "/projects", icon: Briefcase },
   { label: "Case Studies", href: "/case-studies", icon: Layers },
@@ -86,7 +86,7 @@ export function SidebarNav({ onNavigate, role }: SidebarNavProps) {
 export function Brand() {
   return (
     <Link
-      href="/"
+      href="/dashboard"
       className="flex items-center gap-2 px-3 py-1"
       aria-label="Portfolio CMS home"
     >
