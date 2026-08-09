@@ -281,7 +281,7 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
               {...register("featured")}
               className="h-4 w-4 rounded border-zinc-300 text-accent-600 focus:ring-accent-500"
             />
-            Featured project
+            Featured Blog
           </label>
         </Card>
 
