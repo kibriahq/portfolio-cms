@@ -42,6 +42,8 @@ export default async function NewPostPage({ params }: { params: Promise<{ id: st
                         status: post.status ?? "draft",
                         readingTime: post.readingTime ?? 0,
                         tags: post.tags ?? "",
+                        featured: post.featured ?? false,
+                        displayOrder: post.displayOrder ?? 0,
                         metaTitle: post.metaTitle ?? "",
                         metaDescription: post.metaDescription ?? ""
                     }

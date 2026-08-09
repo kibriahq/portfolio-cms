@@ -44,4 +44,6 @@ export interface PostInput {
   tags?: string;
   coverImage?: string;
   content: string;
+  featured?: boolean;
+  displayOrder?: number;
 }

@@ -26,6 +26,8 @@ type Inputs = {
   tags: string
   metaTitle: string
   metaDescription: string
+  featured: boolean
+  displayOrder: number
 };
 
 export function PostForm({ type, categories, post }: { type: "create" | "edit", categories: Category[], post?: Inputs & { id: string } }) {
@@ -260,6 +262,27 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
               </span>
             )}
           </Field>
+
+          <Field label="Display Order" htmlFor="displayOrder">
+            <input
+              id="displayOrder"
+              type="number"
+              min={0}
+              {...register("displayOrder", { valueAsNumber: true })}
+              placeholder="0"
+              className={inputClass}
+            />
+          </Field>
+
+          <label className="flex items-center gap-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <input
+              id="featured"
+              type="checkbox"
+              {...register("featured")}
+              className="h-4 w-4 rounded border-zinc-300 text-accent-600 focus:ring-accent-500"
+            />
+            Featured project
+          </label>
         </Card>
 
         <div className="flex flex-col gap-2">

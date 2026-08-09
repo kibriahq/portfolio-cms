@@ -61,6 +61,8 @@ export async function createPost(data: PostInput) {
     post.coverImagePublicId = undefined;
   }
   post.readingTime = Number(data.readingTime);
+  post.displayOrder = data.displayOrder ? Number(data.displayOrder) : 0;
+  post.featured = Boolean(data.featured);
 
   return prisma.blog.create({ data: post });
 }
@@ -115,6 +117,8 @@ export async function updatePost(id: string, data: PostInput) {
     post.coverImagePublicId = oldPost?.coverImagePublicId ?? undefined;
   }
   post.readingTime = Number(data.readingTime);
+  post.displayOrder = data.displayOrder ? Number(data.displayOrder) : 0;
+  post.featured = Boolean(data.featured);
 
   return prisma.blog.update({ where: { id }, data: post });
 }
