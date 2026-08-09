@@ -4,6 +4,14 @@ import { prisma } from "@/lib/prisma";
 import { ProjectInput } from "@/types/project";
 import { deleteImage, uploadImage } from "./upload";
 
+export async function getTotalPublishedProjectsCount() {
+  return prisma.project.count({
+    where: {
+      status: "PUBLISHED",
+    },
+  });
+}
+
 export async function getProjects() {
   return prisma.project.findMany({
     include: {

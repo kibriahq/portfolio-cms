@@ -4,6 +4,14 @@ import { prisma } from "@/lib/prisma";
 import { PostInput } from "@/types/post";
 import { deleteImage, uploadImage } from "./upload";
 
+export async function getTotalPublishedPostsCount() {
+  return prisma.blog.count({
+    where: {
+      status: "PUBLISHED",
+    },
+  });
+}
+
 export async function getPosts() {
   return prisma.blog.findMany({
     include: {

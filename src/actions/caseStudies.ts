@@ -4,6 +4,14 @@ import { prisma } from "@/lib/prisma";
 import { CaseStudyInput } from "@/types/caseStudy";
 import { deleteImage, uploadImage } from "./upload";
 
+export async function getTotalPublishedCaseStudiesCount() {
+  return prisma.caseStudy.count({
+    where: {
+      status: "PUBLISHED",
+    },
+  });
+}
+
 export async function getCaseStudies() {
   return prisma.caseStudy.findMany({
     include: {
