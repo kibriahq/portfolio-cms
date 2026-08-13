@@ -13,7 +13,7 @@ export function getClientIp(request: NextRequest): string | null {
   if (forwarded) {
     return forwarded.split(",")[0].trim();
   }
-  return request.ip ?? null;
+  return request.headers.get("x-real-ip");
 }
 
 export function getClientLocation(request: NextRequest): string | null {
