@@ -16,7 +16,7 @@ export interface Post {
   status: PostStatus;
   createdAt: string | Date;
   updatedAt: string | Date;
-  tags: string | null;
+  tags: string[] | null;
   coverImage?: string | null;
   content?: string;
   featured?: boolean;

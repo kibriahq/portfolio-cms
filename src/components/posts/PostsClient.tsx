@@ -20,7 +20,7 @@ export function PostsClient({ posts }: PostsClientProps) {
         post.title.toLowerCase().includes(q) ||
         post.slug.toLowerCase().includes(q) ||
         post.category?.name.toLowerCase().includes(q) ||
-        post.tags?.split(',').some((tag) => tag.trim().toLowerCase().includes(q))
+        post.tags?.includes(q)
       );
     });
   }, [posts, query]);

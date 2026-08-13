@@ -61,11 +61,11 @@ export function CaseStudyForm({ type, caseStudy }: { type: "create" | "edit", ca
       ...data,
       technologies: data.technologies
         .split(",")
-        .map((tech) => tech.trim())
+        .map((tech) => tech.trim().toLowerCase())
         .filter(Boolean),
       tags: data.tags
         .split(",")
-        .map((tag) => tag.trim())
+        .map((tag) => tag.trim().toLowerCase())
         .filter(Boolean),
       publishedAt: data.publishedAt ? new Date(data.publishedAt) : null,
     };

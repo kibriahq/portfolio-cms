@@ -11,7 +11,7 @@ export default async function NewPostPage({ params }: { params: Promise<{ id: st
     const categories = await getCategories();
     const { id } = await params;
     const post = await getPostById(id);
-
+    console.log("Post data:", post?.tags); // Log the post data for debugging
     if (!post) {
         notFound();
     }
@@ -41,7 +41,7 @@ export default async function NewPostPage({ params }: { params: Promise<{ id: st
                         content: post.content ?? "",
                         status: post.status ?? "draft",
                         readingTime: post.readingTime ?? 0,
-                        tags: post.tags ?? "",
+                        tags: post.tags ? post.tags.join(", ") : "",
                         featured: post.featured ?? false,
                         displayOrder: post.displayOrder ?? 0,
                         metaTitle: post.metaTitle ?? "",

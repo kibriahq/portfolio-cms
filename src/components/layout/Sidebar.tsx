@@ -13,7 +13,7 @@ export function Sidebar({ role }: { role?: UserRole }) {
       </div>
       <div className="border-t border-zinc-200 p-4 dark:border-zinc-800">
         <p className="px-3 text-xs text-zinc-400 dark:text-zinc-500">
-          v0.1.0 · &copy; {new Date().getFullYear()} by <Link href="https://kibria.dev" target="_blank" rel="noopener noreferrer" className="underline">Kibria</Link>
+          v0.2.0 · &copy; {new Date().getFullYear()} by <Link href="https://kibria.dev" target="_blank" rel="noopener noreferrer" className="underline">Kibria</Link>
         </p>
       </div>
     </aside>

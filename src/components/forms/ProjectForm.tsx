@@ -61,7 +61,7 @@ export function ProjectForm({ type, project }: { type: "create" | "edit", projec
       ...data,
       technologies: data.technologies
         .split(",")
-        .map((tech) => tech.trim())
+        .map((tech) => tech.trim().toLowerCase())
         .filter(Boolean),
     };
 

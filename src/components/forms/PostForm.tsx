@@ -73,7 +73,7 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
       ...data,
       tags: data.tags
         .split(",")
-        .map((tag) => tag.trim())
+        .map((tag) => tag.trim().toLowerCase())
         .filter(Boolean),
     };
 
