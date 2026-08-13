@@ -25,7 +25,7 @@ export async function GET(
     caseStudy.technologies
   );
 
-  return NextResponse.json({ ...caseStudy, relatedCaseStudies });
+  return NextResponse.json({ ...caseStudy, related: relatedCaseStudies });
 }
 
 async function getRelatedCaseStudies(

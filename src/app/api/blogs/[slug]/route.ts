@@ -24,7 +24,7 @@ export async function GET(
     ? await getRelatedBlogs(blog.id, blog.categoryId, blog.tags)
     : [];
 
-  return NextResponse.json({ ...blog, relatedBlogs });
+  return NextResponse.json({ ...blog, related: relatedBlogs });
 }
 
 async function getRelatedBlogs(

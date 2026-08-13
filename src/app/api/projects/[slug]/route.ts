@@ -21,7 +21,7 @@ export async function GET(
 
   const relatedProjects = await getRelatedProjects(project.id, project.technologies);
 
-  return NextResponse.json({ ...project, relatedProjects });
+  return NextResponse.json({ ...project, related: relatedProjects });
 }
 
 async function getRelatedProjects(projectId: string, technologies: string[]) {
