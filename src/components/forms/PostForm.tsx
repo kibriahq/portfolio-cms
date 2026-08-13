@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Eye, Save } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -69,9 +69,17 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
   }, [content, type, setValue]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const payload = {
+      ...data,
+      tags: data.tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean),
+    };
+
    if(type === "create") {
       try {
-        await createPost(data);
+        await createPost(payload);
         toast.success("Post created successfully");
         router.push("/posts");
       } catch (error) {
@@ -83,7 +91,7 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
     
     if(type === "edit" && post?.id) {
       try {
-        await updatePost(post.id, data);
+        await updatePost(post.id, payload);
         toast.success("Post updated successfully");
         router.push("/posts");
       } catch (error) {

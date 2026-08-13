@@ -107,7 +107,7 @@ model Blog {
 
   status       Status     @default(PUBLISHED)
   readingTime  Int?
-  tags         String?
+  tags         String[]   @default([])
   featured     Boolean    @default(false)
   displayOrder Int        @default(0)
 

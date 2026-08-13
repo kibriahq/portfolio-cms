@@ -42,7 +42,7 @@ export interface PostInput {
   excerpt: string;
   status: PostStatus;
   readingTime: number;
-  tags?: string;
+  tags?: string[];
   coverImage?: string;
   content: string;
   featured?: boolean;
