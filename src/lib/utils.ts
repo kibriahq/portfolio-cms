@@ -1,4 +1,3 @@
-import { posts } from "@/data/posts";
 import { categories } from "@/data/categories";
 import type { Post, PostStatus } from "@/types/post";
 import type { Category } from "@/types/category";
@@ -28,14 +27,6 @@ export function formatDateTime(value: string): string {
 
 export function formatNumber(value: number): string {
   return value.toLocaleString("en-US");
-}
-
-export function getPosts(): Post[] {
-  return posts;
-}
-
-export function getPostBySlug(slug: string): Post | undefined {
-  return posts.find((post) => post.slug === slug);
 }
 
 export async function getPostsSummary(posts: Post[]) {
@@ -74,10 +65,6 @@ export function getCategoryBreakdown(posts: Post[]): Array<{
 
 export function getCategories(): Category[] {
   return categories;
-}
-
-export function getPostCountByCategory(categoryName: string): number {
-  return posts.filter((post) => post.category?.name === categoryName).length;
 }
 
 export const STATUS_LABELS: Record<PostStatus, string> = {
