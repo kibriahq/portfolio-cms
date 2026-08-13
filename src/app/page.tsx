@@ -32,6 +32,7 @@ const resourceGroups: ResourceGroup[] = [
         description: "List all published blog posts.",
         params: [
           "hideFeatured=true (optional) — exclude featured posts from the result.",
+          "tags=tag1,tag2 (optional) — only return posts that have at least one of the given tags. Use tags=all to ignore the tag filter and return all posts.",
         ],
         notes: ["Sorted by createdAt descending.", "Includes the related category."],
       },
