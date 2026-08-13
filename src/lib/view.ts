@@ -5,6 +5,7 @@ type ViewInput = {
   pageType?: "HOME" | "ABOUT" | "SKILLS" | "SERVICES" | "CONTACT" | "TESTIMONIALS" | "BLOGS" | "PROJECTS" | "CASE_STUDIES" | "PRIVACY_POLICY" | "TERMS_OF_SERVICE";
   blogId?: string;
   projectId?: string;
+  caseStudyId?: string;
 };
 
 export function getClientIp(request: NextRequest): string | null {

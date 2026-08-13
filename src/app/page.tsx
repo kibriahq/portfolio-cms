@@ -105,9 +105,43 @@ const resourceGroups: ResourceGroup[] = [
   {
     name: "Case Studies",
     basePath: "/api/case-studies",
-    status: "planned",
-    description: "Public read endpoints for published case studies. (Coming soon.)",
-    endpoints: [],
+    status: "available",
+    description:
+      "Public read endpoints for published case study content. Every request also records an anonymous view (IP, user agent, referer and, when available, location).",
+    endpoints: [
+      {
+        method: "GET",
+        path: "/api/case-studies",
+        description: "List all published case studies.",
+        params: [
+          "hideFeatured=true (optional) — exclude featured case studies from the result.",
+        ],
+        notes: ["Sorted by createdAt descending."],
+      },
+      {
+        method: "GET",
+        path: "/api/case-studies/featured",
+        description: "List all published case studies that are marked as featured.",
+        notes: ["Sorted by createdAt descending."],
+      },
+      {
+        method: "GET",
+        path: "/api/case-studies/ordered-list",
+        description:
+          "List all published case studies that have a non-zero displayOrder, sorted ascending by displayOrder.",
+        notes: ["Use this for manually curated/ranked listings."],
+      },
+      {
+        method: "GET",
+        path: "/api/case-studies/[slug]",
+        description: "Fetch a single published case study by its slug.",
+        params: ["slug (path) — the unique case study slug."],
+        notes: [
+          "Returns 404 if the slug does not exist or the case study is not published.",
+          "Records a view with caseStudyId set (pageType left as default).",
+        ],
+      },
+    ],
   },
 ];
 
