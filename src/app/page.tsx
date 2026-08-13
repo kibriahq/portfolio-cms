@@ -75,6 +75,7 @@ const resourceGroups: ResourceGroup[] = [
         description: "List all published projects.",
         params: [
           "hideFeatured=true (optional) — exclude featured projects from the result.",
+          "tech=tech1,tech2 (optional) — only return projects that use at least one of the given technologies. Use tech=all to ignore the technology filter and return all projects.",
         ],
         notes: ["Sorted by createdAt descending."],
       },
