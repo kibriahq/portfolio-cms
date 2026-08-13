@@ -64,9 +64,43 @@ const resourceGroups: ResourceGroup[] = [
   {
     name: "Projects",
     basePath: "/api/projects",
-    status: "planned",
-    description: "Public read endpoints for published projects. (Coming soon.)",
-    endpoints: [],
+    status: "available",
+    description:
+      "Public read endpoints for published project content. Every request also records an anonymous view (IP, user agent, referer and, when available, location).",
+    endpoints: [
+      {
+        method: "GET",
+        path: "/api/projects",
+        description: "List all published projects.",
+        params: [
+          "hideFeatured=true (optional) — exclude featured projects from the result.",
+        ],
+        notes: ["Sorted by createdAt descending."],
+      },
+      {
+        method: "GET",
+        path: "/api/projects/featured",
+        description: "List all published projects that are marked as featured.",
+        notes: ["Sorted by createdAt descending."],
+      },
+      {
+        method: "GET",
+        path: "/api/projects/ordered-list",
+        description:
+          "List all published projects that have a non-zero displayOrder, sorted ascending by displayOrder.",
+        notes: ["Use this for manually curated/ranked listings."],
+      },
+      {
+        method: "GET",
+        path: "/api/projects/[slug]",
+        description: "Fetch a single published project by its slug.",
+        params: ["slug (path) — the unique project slug."],
+        notes: [
+          "Returns 404 if the slug does not exist or the project is not published.",
+          "Records a view with projectId set (pageType left as default).",
+        ],
+      },
+    ],
   },
   {
     name: "Case Studies",
