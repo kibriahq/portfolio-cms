@@ -143,6 +143,28 @@ const resourceGroups: ResourceGroup[] = [
       },
     ],
   },
+  {
+    name: "Page Views",
+    basePath: "/api/track",
+    status: "available",
+    description:
+      "Records an anonymous view for a static site page (IP, user agent, referer and, when available, location). The slug must be a valid page type.",
+    endpoints: [
+      {
+        method: "GET",
+        path: "/api/track/[slug]",
+        description: "Track a view for the page identified by slug.",
+        params: [
+          "slug (path) — the page type, one of: home, about, skills, services, contact, testimonials, blogs, projects, case_studies, privacy_policy, terms_of_service.",
+        ],
+        notes: [
+          "The slug is uppercased and validated against the PageType enum.",
+          "Returns 404 if the slug is missing or not a recognized page type.",
+          "Returns 200 with \"View tracked successfully\" on success.",
+        ],
+      },
+    ],
+  },
 ];
 
 function MethodBadge({ method }: { method: string }) {
