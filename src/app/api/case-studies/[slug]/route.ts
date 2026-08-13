@@ -19,5 +19,56 @@ export async function GET(
 
   await trackView(request, { caseStudyId: caseStudy.id });
 
-  return NextResponse.json(caseStudy);
+  const relatedCaseStudies = await getRelatedCaseStudies(
+    caseStudy.id,
+    caseStudy.tags,
+    caseStudy.technologies
+  );
+
+  return NextResponse.json({ ...caseStudy, relatedCaseStudies });
+}
+
+async function getRelatedCaseStudies(
+  caseStudyId: string,
+  tags: string[],
+  technologies: string[]
+) {
+  const candidates = await prisma.caseStudy.findMany({
+    where: {
+      id: { not: caseStudyId },
+      status: "PUBLISHED",
+    },
+    select: {
+      id: true,
+      title: true,
+      subTitle: true,
+      slug: true,
+      excerpt: true,
+      coverImage: true,
+      coverImagePublicId: true,
+      technologies: true,
+      tags: true,
+      featured: true,
+      displayOrder: true,
+      status: true,
+      metaTitle: true,
+      metaDescription: true,
+      publishedAt: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  return candidates
+    .map((candidate) => ({
+      ...candidate,
+      score:
+        candidate.tags.filter((tag) => tags.includes(tag)).length * 2 +
+        candidate.technologies.filter((tech) =>
+          technologies.includes(tech)
+        ).length,
+    }))
+    .filter((candidate) => candidate.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
 }
