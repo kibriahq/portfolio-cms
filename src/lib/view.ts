@@ -39,6 +39,8 @@ export async function trackView(request: NextRequest, input: ViewInput) {
     data: {
       pageType: input.pageType,
       blogId: input.blogId,
+      projectId: input.projectId,
+      caseStudyId: input.caseStudyId,
       ip: getClientIp(request),
       userAgent: request.headers.get("user-agent"),
       location: getClientLocation(request),
