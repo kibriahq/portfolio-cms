@@ -25,10 +25,10 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Posts / Blog", href: "/posts", icon: FileText },
+  { label: "Blog Posts", href: "/posts", icon: FileText },
   { label: "Projects", href: "/projects", icon: Briefcase },
   { label: "Case Studies", href: "/case-studies", icon: Layers },
-  { label: "Categories", href: "/categories", icon: FolderOpen },
+  { label: "Post Categories", href: "/categories", icon: FolderOpen },
   { label: "Analytics", href: "/analytics", icon: BarChart3 },
   {
     label: "All Admins",
