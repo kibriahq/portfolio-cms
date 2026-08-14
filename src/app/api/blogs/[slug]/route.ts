@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { trackView } from "@/lib/view";
 
 export async function GET(
-  request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
@@ -17,8 +14,6 @@ export async function GET(
   if (!blog || blog.status !== "PUBLISHED") {
     return NextResponse.json({ error: "Blog not found" }, { status: 404 });
   }
-
-  await trackView(request, { blogId: blog.id });
 
   const relatedBlogs = blog.categoryId
     ? await getRelatedBlogs(blog.id, blog.categoryId, blog.tags)

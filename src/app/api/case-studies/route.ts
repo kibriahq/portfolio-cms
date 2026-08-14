@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { trackView } from "@/lib/view";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -19,8 +18,6 @@ export async function GET(request: NextRequest) {
     },
     orderBy: { createdAt: "desc" },
   });
-
-  await trackView(request, { pageType: "CASE_STUDIES" });
 
   return NextResponse.json(caseStudies);
 }
