@@ -20,7 +20,7 @@ type Inputs = {
   excerpt: string
   description: string
   coverImage: string
-  technologies: string
+  tags: string
   liveUrl: string
   githubUrl: string
   featured: boolean
@@ -59,9 +59,9 @@ export function ProjectForm({ type, project }: { type: "create" | "edit", projec
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const payload = {
       ...data,
-      technologies: data.technologies
+      tags: data.tags
         .split(",")
-        .map((tech) => tech.trim().toLowerCase())
+        .map((tag) => tag.trim().toLowerCase())
         .filter(Boolean),
     };
 
@@ -188,15 +188,15 @@ export function ProjectForm({ type, project }: { type: "create" | "edit", projec
             )}
           </Field>
 
-          <Field label="Technologies" htmlFor="technologies">
+          <Field label="Tags" htmlFor="tags">
             <input
-              id="technologies"
-              {...register("technologies")}
-              placeholder="React, Next.js, TypeScript"
+              id="tags"
+              {...register("tags")}
+              placeholder="Corporate Website, E-commerce, SaaS"
               className={inputClass}
             />
             <span className="text-xs text-zinc-400 dark:text-zinc-500">
-              Comma separated list of technologies.
+              Comma separated list of tags.
             </span>
           </Field>
 

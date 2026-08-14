@@ -31,7 +31,7 @@ export interface ProjectInput {
   excerpt?: string;
   description?: string;
   coverImage?: string;
-  technologies: string[];
+  tags: string[];
   liveUrl?: string;
   githubUrl?: string;
   featured?: boolean;

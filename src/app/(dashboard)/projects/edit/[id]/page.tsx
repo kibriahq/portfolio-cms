@@ -39,7 +39,7 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
                 excerpt: project.excerpt ?? "",
                 description: project.description ?? "",
                 coverImage: "",
-                technologies: project.technologies.join(", "),
+                tags: project.tags.join(", "),
                 liveUrl: project.liveUrl ?? "",
                 githubUrl: project.githubUrl ?? "",
                 displayOrder: project.displayOrder ?? 0,

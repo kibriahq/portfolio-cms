@@ -19,12 +19,12 @@ export async function GET(
 
   await trackView(request, { projectId: project.id });
 
-  const relatedProjects = await getRelatedProjects(project.id, project.technologies);
+  const relatedProjects = await getRelatedProjects(project.id, project.tags);
 
   return NextResponse.json({ ...project, related: relatedProjects });
 }
 
-async function getRelatedProjects(projectId: string, technologies: string[]) {
+async function getRelatedProjects(projectId: string, tags: string[]) {
   const candidates = await prisma.project.findMany({
     where: {
       id: { not: projectId },
@@ -38,7 +38,7 @@ async function getRelatedProjects(projectId: string, technologies: string[]) {
       excerpt: true,
       coverImage: true,
       coverImagePublicId: true,
-      technologies: true,
+      tags: true,
       liveUrl: true,
       githubUrl: true,
       featured: true,
@@ -54,8 +54,8 @@ async function getRelatedProjects(projectId: string, technologies: string[]) {
   return candidates
     .map((candidate) => ({
       ...candidate,
-      score: candidate.technologies.filter((tech) =>
-        technologies.includes(tech)
+      score: candidate.tags.filter((tag) =>
+        tags.includes(tag)
       ).length,
     }))
     .filter((candidate) => candidate.score > 0)
