@@ -142,7 +142,7 @@ model Project {
   coverImage         String?
   coverImagePublicId String?
 
-  technologies String[] @default([])
+  tags String[] @default([])
 
   liveUrl   String?
   githubUrl String?
@@ -171,7 +171,6 @@ model CaseStudy {
   coverImage         String?
   coverImagePublicId String?
 
-  technologies       String[]         @default([])
   tags               String[]         @default([])
 
   status             Status           @default(PUBLISHED)
