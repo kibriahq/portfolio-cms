@@ -12,6 +12,7 @@ import {
   PenLine,
   ShieldCheck,
   UserCircle,
+  FileBracesCorner
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { UserRole } from "@/types/user";
@@ -37,6 +38,7 @@ const navItems: NavItem[] = [
     roles: ["SUPER_ADMIN", "ADMIN"],
   },
   { label: "My Profile", href: "/profile", icon: UserCircle },
+  { label: "API Docs", href: "/", icon: FileBracesCorner }
 ];
 
 interface SidebarNavProps {
