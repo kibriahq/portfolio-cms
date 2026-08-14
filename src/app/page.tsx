@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 type Endpoint = {
-  method: "GET";
+  method: "GET" | "POST" | "PUT" | "DELETE";
   path: string;
   description: string;
   params?: string[];
@@ -147,23 +147,31 @@ const resourceGroups: ResourceGroup[] = [
     ],
   },
   {
-    name: "Page Views",
+    name: "Track User Logs",
     basePath: "/api/track",
     status: "available",
     description:
-      "Records an anonymous view for a static site page (IP, user agent, referer and, when available, location). The slug must be a valid page type.",
+      "Records an anonymous view for a site page or a specific content item (IP, user agent, referer and, when available, location).",
     endpoints: [
       {
-        method: "GET",
-        path: "/api/track/[slug]",
-        description: "Track a view for the page identified by slug.",
+        method: "POST",
+        path: "/api/track",
+        description: "Record a view by sending a JSON body.",
         params: [
-          "slug (path) — the page type, one of: home, about, skills, services, contact, testimonials, blogs, projects, case_studies, privacy_policy, terms_of_service.",
+          "pageType (body, required) — one of: HOME, ABOUT, SKILLS, SERVICES, CONTACT, TESTIMONIALS, BLOGS, PROJECTS, CASE_STUDIES, PRIVACY_POLICY, TERMS_OF_SERVICE.",
+          "blogId (body, optional) — when the view is for a blog post, the blog's id.",
+          "projectId (body, optional) — when the view is for a project, the project's id.",
+          "caseStudyId (body, optional) — when the view is for a case study, the case study's id.",
+          "ip (body, optional) — anonymized visitor IP address.",
+          "location (body, optional) — visitor location, when available.",
+          "userAgent (body, optional) — visitor user agent string.",
+          "referer (body, optional) — HTTP referer of the request.",
         ],
         notes: [
-          "The slug is uppercased and validated against the PageType enum.",
-          "Returns 404 if the slug is missing or not a recognized page type.",
-          "Returns 200 with \"View tracked successfully\" on success.",
+          "Send the payload as JSON with a Content-Type of application/json.",
+          "All fields are stored on the View model; blogId, projectId and caseStudyId map to their respective relations.",
+          "Returns 200 with {\"success\": true} on success.",
+          "Returns 500 with {\"success\": false} if the record cannot be created.",
         ],
       },
     ],
@@ -171,8 +179,19 @@ const resourceGroups: ResourceGroup[] = [
 ];
 
 function MethodBadge({ method }: { method: string }) {
+  let color = " ";
+  if(method === "POST") {
+    color = "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
+  } else if(method === "PUT") {
+    color = "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300"
+  } else if(method === "DELETE") {
+    color = "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300"
+  } else {
+    color = "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+  }
+
   return (
-    <span className="inline-flex items-center rounded bg-emerald-100 px-2 py-0.5 font-mono text-xs font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+    <span className={`inline-flex items-center rounded px-2 py-0.5 font-mono text-xs font-semibold ${color}`}>
       {method}
     </span>
   );
