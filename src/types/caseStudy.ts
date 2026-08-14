@@ -31,7 +31,6 @@ export interface CaseStudyInput {
   excerpt?: string;
   content: string;
   coverImage?: string;
-  technologies: string[];
   tags: string[];
   featured?: boolean;
   displayOrder?: number;

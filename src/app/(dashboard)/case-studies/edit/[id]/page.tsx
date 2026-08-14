@@ -39,7 +39,6 @@ export default async function EditCaseStudyPage({ params }: { params: Promise<{ 
                 excerpt: caseStudy.excerpt ?? "",
                 content: caseStudy.content ?? "",
                 coverImage: "",
-                technologies: caseStudy.technologies.join(", "),
                 tags: caseStudy.tags.join(", "),
                 displayOrder: caseStudy.displayOrder ?? 0,
                 status: caseStudy.status ?? "DRAFT",

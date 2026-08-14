@@ -75,7 +75,7 @@ const resourceGroups: ResourceGroup[] = [
         description: "List all published projects.",
         params: [
           "hideFeatured=true (optional) — exclude featured projects from the result.",
-          "tech=tech1,tech2 (optional) — only return projects that use at least one of the given technologies. Use tech=all to ignore the technology filter and return all projects.",
+          "tags=tag1,tag2 (optional) — only return projects that use at least one of the given tags. Use tags=all to ignore the tag filter and return all projects.",
         ],
         notes: ["Sorted by createdAt descending."],
       },
@@ -117,7 +117,7 @@ const resourceGroups: ResourceGroup[] = [
         description: "List all published case studies.",
         params: [
           "hideFeatured=true (optional) — exclude featured case studies from the result.",
-          "tech=tech1,tech2 (optional) — only return case studies that use at least one of the given technologies. Use tech=all to ignore the technology filter and return all case studies.",
+          "tags=tag1,tag2 (optional) — only return case studies that use at least one of the given tags. Use tags=all to ignore the tag filter and return all case studies.",
         ],
         notes: ["Sorted by createdAt descending."],
       },

@@ -6,16 +6,16 @@ import { trackView } from "@/lib/view";
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const hideFeatured = searchParams.get("hideFeatured") === "true";
-  const techParam = searchParams.get("tech");
-  const tech = techParam && techParam !== "all"
-    ? techParam.split(",").map((t) => t.trim()).filter(Boolean)
+  const tagParam = searchParams.get("tags");
+  const tags = tagParam && tagParam !== "all"
+    ? tagParam.split(",").map((t) => t.trim()).filter(Boolean)
     : [];
 
   const caseStudies = await prisma.caseStudy.findMany({
     where: {
       status: "PUBLISHED",
       ...(hideFeatured ? { featured: false } : {}),
-      ...(tech.length ? { technologies: { hasSome: tech } } : {}),
+      ...(tags.length ? { tags: { hasSome: tags } } : {}),
     },
     orderBy: { createdAt: "desc" },
   });

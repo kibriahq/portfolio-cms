@@ -20,7 +20,6 @@ type Inputs = {
   excerpt: string
   content: string
   coverImage: string
-  technologies: string
   tags: string
   featured: boolean
   displayOrder: number
@@ -59,10 +58,6 @@ export function CaseStudyForm({ type, caseStudy }: { type: "create" | "edit", ca
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const payload = {
       ...data,
-      technologies: data.technologies
-        .split(",")
-        .map((tech) => tech.trim().toLowerCase())
-        .filter(Boolean),
       tags: data.tags
         .split(",")
         .map((tag) => tag.trim().toLowerCase())
@@ -191,18 +186,6 @@ export function CaseStudyForm({ type, caseStudy }: { type: "create" | "edit", ca
                 {errors.coverImage.message}
               </span>
             )}
-          </Field>
-
-          <Field label="Technologies" htmlFor="technologies">
-            <input
-              id="technologies"
-              {...register("technologies")}
-              placeholder="React, Next.js, TypeScript"
-              className={inputClass}
-            />
-            <span className="text-xs text-zinc-400 dark:text-zinc-500">
-              Comma separated list of technologies.
-            </span>
           </Field>
 
           <Field label="Tags" htmlFor="tags">
