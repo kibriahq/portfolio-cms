@@ -19,11 +19,7 @@ export async function GET(
 
   await trackView(request, { caseStudyId: caseStudy.id });
 
-  const relatedCaseStudies = await getRelatedCaseStudies(
-    caseStudy.id,
-    caseStudy.tags,
-    caseStudy.technologies
-  );
+  const relatedCaseStudies = await getRelatedCaseStudies(caseStudy.id, caseStudy.tags);
 
   return NextResponse.json({ ...caseStudy, related: relatedCaseStudies });
 }
@@ -31,7 +27,6 @@ export async function GET(
 async function getRelatedCaseStudies(
   caseStudyId: string,
   tags: string[],
-  technologies: string[]
 ) {
   const candidates = await prisma.caseStudy.findMany({
     where: {
@@ -46,7 +41,6 @@ async function getRelatedCaseStudies(
       excerpt: true,
       coverImage: true,
       coverImagePublicId: true,
-      technologies: true,
       tags: true,
       featured: true,
       displayOrder: true,
@@ -62,11 +56,9 @@ async function getRelatedCaseStudies(
   return candidates
     .map((candidate) => ({
       ...candidate,
-      score:
-        candidate.tags.filter((tag) => tags.includes(tag)).length * 2 +
-        candidate.technologies.filter((tech) =>
-          technologies.includes(tech)
-        ).length,
+      score: candidate.tags.filter((tag) =>
+        tags.includes(tag)
+      ).length,
     }))
     .filter((candidate) => candidate.score > 0)
     .sort((a, b) => b.score - a.score)
