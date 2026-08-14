@@ -9,7 +9,6 @@ export interface CaseStudy {
   content: string;
   coverImage: string | null;
   coverImagePublicId: string | null;
-  technologies: string[];
   tags: string[];
   status: CaseStudyStatus;
   featured: boolean;

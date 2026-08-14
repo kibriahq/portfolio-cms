@@ -19,7 +19,6 @@ export function CaseStudiesClient({ caseStudies }: CaseStudiesClientProps) {
       return (
         caseStudy.title.toLowerCase().includes(q) ||
         caseStudy.slug.toLowerCase().includes(q) ||
-        caseStudy.technologies.some((tech) => tech.toLowerCase().includes(q)) ||
         caseStudy.tags.some((tag) => tag.toLowerCase().includes(q))
       );
     });
@@ -30,7 +29,7 @@ export function CaseStudiesClient({ caseStudies }: CaseStudiesClientProps) {
       <SearchBar
         value={query}
         onChange={setQuery}
-        placeholder="Search by title, slug, technology, or tag..."
+        placeholder="Search by title, slug, or tag..."
         className="sm:max-w-sm"
       />
       <CaseStudiesTable caseStudies={filtered} />

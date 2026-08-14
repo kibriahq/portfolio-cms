@@ -9,7 +9,7 @@ export interface Project {
   description: string | null;
   coverImage: string | null;
   coverImagePublicId: string | null;
-  technologies: string[];
+  tags: string[];
   liveUrl: string | null;
   githubUrl: string | null;
   featured: boolean;

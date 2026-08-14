@@ -19,7 +19,7 @@ export function ProjectsClient({ projects }: ProjectsClientProps) {
       return (
         project.title.toLowerCase().includes(q) ||
         project.slug.toLowerCase().includes(q) ||
-        project.technologies.some((tech) => tech.toLowerCase().includes(q))
+        project.tags.some((tag) => tag.toLowerCase().includes(q))
       );
     });
   }, [projects, query]);
@@ -29,7 +29,7 @@ export function ProjectsClient({ projects }: ProjectsClientProps) {
       <SearchBar
         value={query}
         onChange={setQuery}
-        placeholder="Search by title, slug, or technology..."
+        placeholder="Search by title, slug, or tag..."
         className="sm:max-w-sm"
       />
       <ProjectsTable projects={filtered} />
