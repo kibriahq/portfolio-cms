@@ -2,12 +2,14 @@ import { Eye, FileEdit, Upload, BicepsFlexed } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { RecentPostsTable } from "@/components/dashboard/RecentPostsTable";
+import { RecentCaseStudiesTable } from "@/components/dashboard/RecentCaseStudiesTable";
+import { RecentProjectsTable } from "@/components/dashboard/RecentProjectsTable";
 import { getPosts, getTotalPublishedPostsCount } from "@/actions/posts";
 import { getTotalViews, getViewsLast6Hours, getTrafficOverviewLast6Hours } from "@/actions/views";
 import { VisitorsLineChart } from "@/components/overview/VisitorsLineChart";
 import { TrafficOverview } from "@/components/overview/TrafficOverview";
-import { getTotalPublishedCaseStudiesCount } from "@/actions/caseStudies";
-import { getTotalPublishedProjectsCount } from "@/actions/projects";
+import { getCaseStudies, getTotalPublishedCaseStudiesCount } from "@/actions/caseStudies";
+import { getProjects, getTotalPublishedProjectsCount } from "@/actions/projects";
 
 export default async function DashboardPage() {
   const totalViews = await getTotalViews();
@@ -15,11 +17,12 @@ export default async function DashboardPage() {
   const trafficOverview = await getTrafficOverviewLast6Hours();
 
   const posts = await getPosts();
+  const caseStudies = await getCaseStudies();
+  const projects = await getProjects();
 
   const publishedPostsCount = await getTotalPublishedPostsCount();
   const publishedCaseStudiesCount = await getTotalPublishedCaseStudiesCount();
-  const publishedProjectsCount = await getTotalPublishedProjectsCount()
-
+  const publishedProjectsCount = await getTotalPublishedProjectsCount();
 
   return (
     <>
@@ -70,6 +73,11 @@ export default async function DashboardPage() {
 
       <div className="mt-6">
         <RecentPostsTable posts={posts} limit={6} />
+      </div>
+      
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <RecentCaseStudiesTable caseStudies={caseStudies} limit={6} />
+        <RecentProjectsTable projects={projects} limit={6} />
       </div>
     </>
   );

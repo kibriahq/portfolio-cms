@@ -4,29 +4,32 @@ import { Card } from "@/components/ui/Card";
 import { StatusBadge } from "@/components/posts/StatusBadge";
 import { PostCover } from "@/components/posts/PostCover";
 import { formatDate, formatNumber } from "@/lib/utils";
-import type { Post } from "@/types/post";
+import type { Project } from "@/types/project";
 
-interface RecentPostsTableProps {
-  posts: Post[];
+interface RecentProjectsTableProps {
+  projects: Project[];
   limit?: number;
 }
 
-export function RecentPostsTable({ posts, limit = 5 }: RecentPostsTableProps) {
-  const rows = posts.slice(0, limit);
+export function RecentProjectsTable({
+  projects,
+  limit = 5,
+}: RecentProjectsTableProps) {
+  const rows = projects.slice(0, limit);
 
   return (
     <Card className="overflow-hidden">
       <div className="flex items-center justify-between border-b border-zinc-200 px-5 py-4 dark:border-zinc-800 sm:px-6">
         <div>
           <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
-            Recent Posts
+            Recent Projects
           </h2>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            Your latest published and draft content.
+            Your latest published and draft projects.
           </p>
         </div>
         <Link
-          href="/posts"
+          href="/projects"
           className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
         >
           View all
@@ -43,33 +46,33 @@ export function RecentPostsTable({ posts, limit = 5 }: RecentPostsTableProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-            {rows.map((post) => (
+            {rows.map((project) => (
               <tr
-                key={post.id}
+                key={project.id}
                 className="transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800/40"
               >
                 <td className="px-5 py-3 sm:px-6">
                   <div className="flex items-center gap-3">
                     <PostCover
-                      src={post.coverImage}
-                      title={post.title}
+                      src={project.coverImage}
+                      title={project.title}
                       className="h-10 w-10 shrink-0"
                     />
                     <Link
-                      href="/posts"
+                      href="/projects"
                       className="font-medium text-zinc-900 hover:underline dark:text-zinc-50"
                     >
-                      {post.title}
+                      {project.title}
                     </Link>
                   </div>
                 </td>
                 <td className="px-5 py-3 sm:px-6">
-                  <StatusBadge status={post.status} />
+                  <StatusBadge status={project.status} />
                 </td>
                 <td className="px-5 py-3 text-right sm:px-6">
                   <span className="inline-flex items-center justify-end gap-1 text-zinc-700 dark:text-zinc-300">
                     <Eye className="h-3.5 w-3.5 text-zinc-400" />
-                    {formatNumber(post._count.views)}
+                    {formatNumber(project._count.views)}
                   </span>
                 </td>
               </tr>
