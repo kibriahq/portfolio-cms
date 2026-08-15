@@ -4,12 +4,14 @@ import { StatCard } from "@/components/dashboard/StatCard";
 import { TopPostsTable } from "@/components/dashboard/TopPostsTable";
 import { TopCaseStudiesTable } from "@/components/dashboard/TopCaseStudiesTable";
 import { TopProjectsTable } from "@/components/dashboard/TopProjectsTable";
+import { TopCategoriesTable } from "@/components/dashboard/TopCategoriesTable";
 import { getPosts, getTotalPublishedPostsCount } from "@/actions/posts";
 import { getTotalViews, getViewsLast6Hours, getTrafficOverviewLast6Hours } from "@/actions/views";
 import { VisitorsLineChart } from "@/components/overview/VisitorsLineChart";
 import { TrafficOverview } from "@/components/overview/TrafficOverview";
 import { getCaseStudies, getTotalPublishedCaseStudiesCount } from "@/actions/caseStudies";
 import { getProjects, getTotalPublishedProjectsCount } from "@/actions/projects";
+import { getCategories } from "@/actions/categories";
 
 export default async function DashboardPage() {
   const totalViews = await getTotalViews();
@@ -19,6 +21,7 @@ export default async function DashboardPage() {
   const posts = await getPosts();
   const caseStudies = await getCaseStudies();
   const projects = await getProjects();
+  const categories = await getCategories();
 
   const publishedPostsCount = await getTotalPublishedPostsCount();
   const publishedCaseStudiesCount = await getTotalPublishedCaseStudiesCount();
@@ -71,8 +74,13 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-6">
-        <TopPostsTable posts={posts} limit={6} />
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="md:col-span-2">
+          <TopPostsTable posts={posts} limit={6} />
+        </div>
+        <div className="md:col-span-1">
+          <TopCategoriesTable categories={categories} limit={6} />
+        </div>
       </div>
        
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
