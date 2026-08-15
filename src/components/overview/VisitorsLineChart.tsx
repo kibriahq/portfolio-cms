@@ -13,8 +13,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import type { HourlyViewPoint } from "@/actions/views";
 
 export function VisitorsLineChart({ data }: { data: HourlyViewPoint[] }) {
-  console.log(data);
-  
   return (
     <Card>
       <CardHeader>

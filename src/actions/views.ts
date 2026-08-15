@@ -13,7 +13,10 @@ export interface HourlyViewPoint {
 
 export async function getViewsLast6Hours(): Promise<HourlyViewPoint[]> {
   const now = new Date();
-  const sixHoursAgo = new Date(now.getTime() - 6 * 60 * 60 * 1000);
+  const currentHourStart = new Date(now);
+  currentHourStart.setMinutes(0, 0, 0);
+
+  const sixHoursAgo = new Date(currentHourStart.getTime() - 5 * 60 * 60 * 1000);
 
   const views = await prisma.view.findMany({
     where: {
@@ -25,23 +28,25 @@ export async function getViewsLast6Hours(): Promise<HourlyViewPoint[]> {
       viewedAt: true,
     },
   });
-  
+
   const buckets = new Map<number, number>();
   for (let i = 0; i < 6; i++) buckets.set(i, 0);
 
   for (const { viewedAt } of views) {
-    const diffHours = Math.floor((now.getTime() - viewedAt.getTime()) / (60 * 60 * 1000));
-    const bucket = 5 - diffHours;
+    const hourStart = new Date(viewedAt);
+    hourStart.setMinutes(0, 0, 0);
+    const bucket = Math.round(
+      (hourStart.getTime() - sixHoursAgo.getTime()) / (60 * 60 * 1000)
+    );
     if (bucket >= 0 && bucket < 6) {
       buckets.set(bucket, (buckets.get(bucket) ?? 0) + 1);
     }
   }
 
   return Array.from({ length: 6 }, (_, i) => {
-    const bucketTime = new Date(now.getTime() - (5 - i) * 60 * 60 * 1000);
+    const bucketTime = new Date(sixHoursAgo.getTime() + i * 60 * 60 * 1000);
     const label = bucketTime.toLocaleTimeString("en-US", {
       hour: "numeric",
-      minute: "2-digit",
       hour12: true,
     });
     return {
