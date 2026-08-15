@@ -48,6 +48,7 @@ export async function getViewsLast6Hours(): Promise<HourlyViewPoint[]> {
     const label = bucketTime.toLocaleTimeString("en-US", {
       hour: "numeric",
       hour12: true,
+      timeZone: "Asia/Dhaka",
     });
     return {
       hour: label,
