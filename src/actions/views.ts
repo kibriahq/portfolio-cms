@@ -72,43 +72,33 @@ export async function getTrafficOverviewLast6Hours(): Promise<TrafficOverview> {
 
   const sixHoursAgo = new Date(currentHourStart.getTime() - 5 * 60 * 60 * 1000);
 
-  const [
-    totalVisitors,
-    homePageViews,
-    pageViews,
-    blogViews,
-    projectViews,
-    caseStudyViews,
-  ] = await Promise.all([
-    prisma.view.count({
-      where: { viewedAt: { gte: sixHoursAgo } },
-    }),
-    prisma.view.count({
-      where: { viewedAt: { gte: sixHoursAgo }, pageType: "HOME" },
-    }),
-    prisma.view.count({
-      where: {
-        viewedAt: { gte: sixHoursAgo },
-        pageType: { not: null, notIn: ["HOME"] },
-      },
-    }),
-    prisma.view.count({
-      where: { viewedAt: { gte: sixHoursAgo }, blogId: { not: null } },
-    }),
-    prisma.view.count({
-      where: { viewedAt: { gte: sixHoursAgo }, projectId: { not: null } },
-    }),
-    prisma.view.count({
-      where: { viewedAt: { gte: sixHoursAgo }, caseStudyId: { not: null } },
-    }),
-  ]);
+  const result = await prisma.$queryRaw<{
+    totalVisitors: bigint;
+    homePageViews: bigint;
+    pageViews: bigint;
+    blogViews: bigint;
+    projectViews: bigint;
+    caseStudyViews: bigint;
+  }[]>`
+    SELECT
+      COUNT(*) AS "totalVisitors",
+      COUNT(*) FILTER (WHERE "pageType" = 'HOME') AS "homePageViews",
+      COUNT(*) FILTER (WHERE "pageType" IS NOT NULL AND "pageType" <> 'HOME') AS "pageViews",
+      COUNT(*) FILTER (WHERE "blogId" IS NOT NULL) AS "blogViews",
+      COUNT(*) FILTER (WHERE "projectId" IS NOT NULL) AS "projectViews",
+      COUNT(*) FILTER (WHERE "caseStudyId" IS NOT NULL) AS "caseStudyViews"
+    FROM "View"
+    WHERE "viewedAt" >= ${sixHoursAgo}
+  `;
+
+  const row = result[0];
 
   return {
-    totalVisitors,
-    homePageViews,
-    pageViews,
-    blogViews,
-    projectViews,
-    caseStudyViews,
+    totalVisitors: Number(row.totalVisitors),
+    homePageViews: Number(row.homePageViews),
+    pageViews: Number(row.pageViews),
+    blogViews: Number(row.blogViews),
+    projectViews: Number(row.projectViews),
+    caseStudyViews: Number(row.caseStudyViews),
   };
 }
