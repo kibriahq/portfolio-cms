@@ -3,13 +3,15 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { RecentPostsTable } from "@/components/dashboard/RecentPostsTable";
 import { getPosts, getTotalPublishedPostsCount } from "@/actions/posts";
-import { getTotalViews } from "@/actions/views";
+import { getTotalViews, getViewsLast6Hours } from "@/actions/views";
+import { VisitorsLineChart } from "@/components/overview/VisitorsLineChart";
 import { getTotalPublishedCaseStudiesCount } from "@/actions/caseStudies";
 import { getTotalPublishedProjectsCount } from "@/actions/projects";
 
 export default async function DashboardPage() {
   const totalViews = await getTotalViews();
-  
+  const visitorsLast6Hours = await getViewsLast6Hours();
+
   const posts = await getPosts();
 
   const publishedPostsCount = await getTotalPublishedPostsCount();
@@ -53,6 +55,10 @@ export default async function DashboardPage() {
           accent="info"
           hint="All time all pages and posts"
         />
+      </div>
+
+      <div className="mt-6">
+        <VisitorsLineChart data={visitorsLast6Hours} />
       </div>
 
       <div className="mt-6">
