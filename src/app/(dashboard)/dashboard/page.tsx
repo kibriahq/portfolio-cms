@@ -3,14 +3,16 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { RecentPostsTable } from "@/components/dashboard/RecentPostsTable";
 import { getPosts, getTotalPublishedPostsCount } from "@/actions/posts";
-import { getTotalViews, getViewsLast6Hours } from "@/actions/views";
+import { getTotalViews, getViewsLast6Hours, getTrafficOverviewLast6Hours } from "@/actions/views";
 import { VisitorsLineChart } from "@/components/overview/VisitorsLineChart";
+import { TrafficOverview } from "@/components/overview/TrafficOverview";
 import { getTotalPublishedCaseStudiesCount } from "@/actions/caseStudies";
 import { getTotalPublishedProjectsCount } from "@/actions/projects";
 
 export default async function DashboardPage() {
   const totalViews = await getTotalViews();
   const visitorsLast6Hours = await getViewsLast6Hours();
+  const trafficOverview = await getTrafficOverviewLast6Hours();
 
   const posts = await getPosts();
 
@@ -57,8 +59,13 @@ export default async function DashboardPage() {
         />
       </div>
 
-      <div className="mt-6">
-        <VisitorsLineChart data={visitorsLast6Hours} />
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="md:col-span-2">
+          <VisitorsLineChart data={visitorsLast6Hours} />
+        </div>
+        <div className="md:col-span-1">
+          <TrafficOverview data={trafficOverview} />
+        </div>
       </div>
 
       <div className="mt-6">

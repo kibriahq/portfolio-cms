@@ -55,3 +55,60 @@ export async function getViewsLast6Hours(): Promise<HourlyViewPoint[]> {
     };
   });
 }
+
+export interface TrafficOverview {
+  totalVisitors: number;
+  homePageViews: number;
+  pageViews: number;
+  blogViews: number;
+  projectViews: number;
+  caseStudyViews: number;
+}
+
+export async function getTrafficOverviewLast6Hours(): Promise<TrafficOverview> {
+  const now = new Date();
+  const currentHourStart = new Date(now);
+  currentHourStart.setMinutes(0, 0, 0);
+
+  const sixHoursAgo = new Date(currentHourStart.getTime() - 5 * 60 * 60 * 1000);
+
+  const [
+    totalVisitors,
+    homePageViews,
+    pageViews,
+    blogViews,
+    projectViews,
+    caseStudyViews,
+  ] = await Promise.all([
+    prisma.view.count({
+      where: { viewedAt: { gte: sixHoursAgo } },
+    }),
+    prisma.view.count({
+      where: { viewedAt: { gte: sixHoursAgo }, pageType: "HOME" },
+    }),
+    prisma.view.count({
+      where: {
+        viewedAt: { gte: sixHoursAgo },
+        pageType: { not: null, notIn: ["HOME"] },
+      },
+    }),
+    prisma.view.count({
+      where: { viewedAt: { gte: sixHoursAgo }, blogId: { not: null } },
+    }),
+    prisma.view.count({
+      where: { viewedAt: { gte: sixHoursAgo }, projectId: { not: null } },
+    }),
+    prisma.view.count({
+      where: { viewedAt: { gte: sixHoursAgo }, caseStudyId: { not: null } },
+    }),
+  ]);
+
+  return {
+    totalVisitors,
+    homePageViews,
+    pageViews,
+    blogViews,
+    projectViews,
+    caseStudyViews,
+  };
+}
