@@ -15,6 +15,14 @@ export function formatDate(value: string | Date): string {
   });
 }
 
+export function formatShortDate(value: string | Date): string {
+  const date = new Date(value);
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+}
+
 export function formatDateTime(value: string): string {
   const date = new Date(value);
   return date.toLocaleString("en-US", {

@@ -1,9 +1,9 @@
 import { Eye, FileEdit, Upload, BicepsFlexed } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { StatCard } from "@/components/dashboard/StatCard";
-import { RecentPostsTable } from "@/components/dashboard/RecentPostsTable";
-import { RecentCaseStudiesTable } from "@/components/dashboard/RecentCaseStudiesTable";
-import { RecentProjectsTable } from "@/components/dashboard/RecentProjectsTable";
+import { TopPostsTable } from "@/components/dashboard/TopPostsTable";
+import { TopCaseStudiesTable } from "@/components/dashboard/TopCaseStudiesTable";
+import { TopProjectsTable } from "@/components/dashboard/TopProjectsTable";
 import { getPosts, getTotalPublishedPostsCount } from "@/actions/posts";
 import { getTotalViews, getViewsLast6Hours, getTrafficOverviewLast6Hours } from "@/actions/views";
 import { VisitorsLineChart } from "@/components/overview/VisitorsLineChart";
@@ -72,12 +72,12 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-6">
-        <RecentPostsTable posts={posts} limit={6} />
+        <TopPostsTable posts={posts} limit={6} />
       </div>
-      
+       
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <RecentCaseStudiesTable caseStudies={caseStudies} limit={6} />
-        <RecentProjectsTable projects={projects} limit={6} />
+        <TopCaseStudiesTable caseStudies={caseStudies} limit={6} />
+        <TopProjectsTable projects={projects} limit={6} />
       </div>
     </>
   );
