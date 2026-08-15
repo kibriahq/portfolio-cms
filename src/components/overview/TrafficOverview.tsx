@@ -34,7 +34,11 @@ export function TrafficOverview({ data }: TrafficOverviewCardProps) {
                 {row.label}
               </span>
               <span className="text-lg font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
-                {row.value.toLocaleString("en-US")}
+                {row.label === "Total Visitors" ? (
+                  <span className="text-accent-400">{row.value.toLocaleString("en-US")}</span>
+                  ) : (
+                    <span className="text-zinc-400">{row.value.toLocaleString("en-US")}</span>
+                  )}
               </span>
             </li>
           ))}
