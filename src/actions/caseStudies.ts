@@ -3,6 +3,8 @@
 import { prisma } from "@/lib/prisma";
 import { CaseStudyInput } from "@/types/caseStudy";
 import { deleteImage, uploadImage } from "./upload";
+import { sanitizeHtmlContent } from "@/lib/sanitize-html";
+import { extractPublicIds } from "@/lib/image-utils";
 
 export async function getTotalPublishedCaseStudiesCount() {
   return prisma.caseStudy.count({
@@ -41,6 +43,7 @@ export async function createCaseStudy(data: CaseStudyInput) {
   }
 
   const caseStudy: CaseStudyInput & { coverImagePublicId?: string } = { ...data };
+  caseStudy.content = sanitizeHtmlContent(data.content ?? "");
 
   if (data.coverImage) {
     try {
@@ -87,6 +90,7 @@ export async function updateCaseStudy(id: string, data: CaseStudyInput) {
   }
 
   const caseStudy: CaseStudyInput & { coverImagePublicId?: string } = { ...data };
+  caseStudy.content = sanitizeHtmlContent(data.content ?? "");
   const oldCaseStudy = await prisma.caseStudy.findUnique({ where: { id } });
 
   if (!oldCaseStudy) {
@@ -138,6 +142,19 @@ export async function deleteCaseStudy(id: string) {
           ? error.message
           : "while deleting the image from Cloudinary",
       );
+    }
+  }
+
+  if (caseStudy?.content) {
+    for (const publicId of extractPublicIds(caseStudy.content)) {
+      try {
+        await deleteImage(publicId);
+      } catch (error) {
+        console.error(
+          `Failed to delete in-content image ${publicId} for case study ${id}`,
+          error,
+        );
+      }
     }
   }
 

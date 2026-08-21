@@ -12,6 +12,9 @@ import {
   TableHeader,
   TableCell,
 } from "@tiptap/extension-table";
+import ImageWithPublicId from "./extensions/image-with-public-id";
+import { uploadImage, deleteImage } from "@/actions/upload";
+import { extractPublicIds } from "@/lib/image-utils";
 import {
   Bold,
   Italic,
@@ -34,8 +37,9 @@ import {
   ChevronDown,
   Undo,
   Redo,
+  Image as ImageIcon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface RichTextEditorProps {
@@ -124,6 +128,10 @@ export function RichTextEditor({
       TableRow,
       TableHeader,
       TableCell,
+      ImageWithPublicId.configure({
+        inline: false,
+        allowBase64: false,
+      }),
     ],
     content: value,
     editorProps: {
@@ -133,13 +141,41 @@ export function RichTextEditor({
       },
     },
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      handleContentChange(editor);
     },
   });
+
+  const publicIdsRef = useRef<string[]>(extractPublicIds(value));
+
+  const syncRef = (editor: Editor) => {
+    publicIdsRef.current = extractPublicIds(editor.getHTML());
+  };
+
+  const handleContentChange = (editor: Editor) => {
+    onChange(editor.getHTML());
+    reconcilePublicIds(editor);
+  };
+
+  const reconcilePublicIds = (editor: Editor) => {
+    const current = extractPublicIds(editor.getHTML());
+    const previous = publicIdsRef.current;
+    const removed = previous.filter((id) => id && !current.includes(id));
+    if (removed.length > 0) {
+      publicIdsRef.current = current;
+      for (const id of removed) {
+        deleteImage(id).catch((error) => {
+          console.error("Failed to delete image from Cloudinary", id, error);
+        });
+      }
+    } else if (current.length !== previous.length) {
+      publicIdsRef.current = current;
+    }
+  };
 
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value, { emitUpdate: false });
+      syncRef(editor);
     }
   }, [value, editor]);
 
@@ -297,6 +333,158 @@ function TableControls({ editor }: { editor: Editor }) {
               {action.label}
             </button>
           ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function ImageControls({ editor }: { editor: Editor }) {
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState<"upload" | "url">("upload");
+  const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) {
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await uploadImage(file, "content");
+      editor
+        .chain()
+        .focus()
+        // @ts-expect-error setImage accepts extra publicId attribute
+        .setImage({ src: result.secure_url, publicId: result.public_id })
+        .run();
+      setOpen(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInsertUrl = () => {
+    const trimmed = url.trim();
+    if (!/^https:\/\//i.test(trimmed)) {
+      setError("Please enter a valid https:// URL");
+      return;
+    }
+    editor.chain().focus().setImage({ src: trimmed }).run();
+    setUrl("");
+    setOpen(false);
+  };
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        title="Insert image"
+        aria-label="Insert image"
+        onMouseDown={(event) => event.preventDefault()}
+        onClick={() => setOpen((value) => !value)}
+        className={cn(
+          "inline-flex h-8 items-center gap-1 rounded-md px-2 text-xs font-medium transition-colors",
+          "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
+          "dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
+          open && "bg-accent-600 text-white hover:bg-accent-600 hover:text-white",
+        )}
+      >
+        <ImageIcon className="h-4 w-4" />
+        <ChevronDown className="h-3.5 w-3.5" />
+      </button>
+
+      {open ? (
+        <div
+          className="absolute z-20 mt-1 w-64 rounded-md border border-zinc-200 bg-white p-2 shadow-lg dark:border-zinc-800 dark:bg-zinc-900"
+          onMouseDown={(event) => event.preventDefault()}
+        >
+          <div className="mb-2 flex gap-1">
+            <button
+              type="button"
+              onClick={() => {
+                setTab("upload");
+                setError(null);
+              }}
+              className={cn(
+                "flex-1 rounded px-2 py-1 text-xs font-medium",
+                tab === "upload"
+                  ? "bg-accent-600 text-white"
+                  : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800",
+              )}
+            >
+              Upload
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setTab("url");
+                setError(null);
+              }}
+              className={cn(
+                "flex-1 rounded px-2 py-1 text-xs font-medium",
+                tab === "url"
+                  ? "bg-accent-600 text-white"
+                  : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800",
+              )}
+            >
+              URL
+            </button>
+          </div>
+
+          {tab === "upload" ? (
+            <div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <button
+                type="button"
+                disabled={loading}
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full rounded-md border border-dashed border-zinc-300 px-3 py-3 text-xs text-zinc-600 hover:border-accent-500 hover:text-accent-600 dark:border-zinc-700 dark:text-zinc-400 disabled:opacity-50"
+              >
+                {loading ? "Uploading..." : "Choose image file"}
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <input
+                type="url"
+                value={url}
+                placeholder="https://..."
+                onChange={(event) => setUrl(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    handleInsertUrl();
+                  }
+                }}
+                className="w-full rounded-md border border-zinc-200 bg-white px-2 py-1.5 text-xs text-zinc-900 outline-none focus:border-accent-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
+              />
+              <button
+                type="button"
+                onClick={handleInsertUrl}
+                className="rounded-md bg-accent-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-accent-700"
+              >
+                Insert
+              </button>
+            </div>
+          )}
+
+          {error ? (
+            <p className="mt-2 text-xs text-red-500">{error}</p>
+          ) : null}
         </div>
       ) : null}
     </div>
@@ -479,6 +667,8 @@ function Toolbar({
       >
         <TableIcon className="h-4 w-4" />
       </ToolbarButton>
+
+      <ImageControls editor={editor} />
 
       {editor.isActive("table") ? (
         <TableControls editor={editor} />

@@ -3,6 +3,8 @@
 import { prisma } from "@/lib/prisma";
 import { PostInput } from "@/types/post";
 import { deleteImage, uploadImage } from "./upload";
+import { sanitizeHtmlContent } from "@/lib/sanitize-html";
+import { extractPublicIds } from "@/lib/image-utils";
 
 export async function getTotalPublishedPostsCount() {
   return prisma.blog.count({
@@ -48,6 +50,7 @@ export async function createPost(data: PostInput) {
   }
 
   const post: PostInput & { coverImagePublicId?: string } = { ...data };
+  post.content = sanitizeHtmlContent(data.content ?? "");
   // Upload the cover image if provided
   if (data.coverImage) {
     try {
@@ -91,6 +94,7 @@ export async function updatePost(id: string, data: PostInput) {
   }
 
   const post: PostInput & { coverImagePublicId?: string } = { ...data };
+  post.content = sanitizeHtmlContent(data.content ?? "");
   const oldPost = await prisma.blog.findUnique({ where: { id } });
 
    if (!oldPost) {
@@ -144,6 +148,19 @@ export async function deletePost(id: string) {
           ? error.message
           : "while deleting the image from Cloudinary",
       );
+    }
+  }
+
+  if (post?.content) {
+    for (const publicId of extractPublicIds(post.content)) {
+      try {
+        await deleteImage(publicId);
+      } catch (error) {
+        console.error(
+          `Failed to delete in-content image ${publicId} for post ${id}`,
+          error,
+        );
+      }
     }
   }
 

@@ -3,6 +3,8 @@
 import { prisma } from "@/lib/prisma";
 import { ProjectInput } from "@/types/project";
 import { deleteImage, uploadImage } from "./upload";
+import { sanitizeHtmlContent } from "@/lib/sanitize-html";
+import { extractPublicIds } from "@/lib/image-utils";
 
 export async function getTotalPublishedProjectsCount() {
   return prisma.project.count({
@@ -41,6 +43,7 @@ export async function createProject(data: ProjectInput) {
   }
 
   const project: ProjectInput & { coverImagePublicId?: string } = { ...data };
+  project.description = sanitizeHtmlContent(data.description ?? "");
 
   if (data.coverImage) {
     try {
@@ -81,6 +84,7 @@ export async function updateProject(id: string, data: ProjectInput) {
   }
 
   const project: ProjectInput & { coverImagePublicId?: string } = { ...data };
+  project.description = sanitizeHtmlContent(data.description ?? "");
   const oldProject = await prisma.project.findUnique({ where: { id } });
 
   if (!oldProject) {
@@ -126,6 +130,19 @@ export async function deleteProject(id: string) {
           ? error.message
           : "while deleting the image from Cloudinary",
       );
+    }
+  }
+
+  if (project?.description) {
+    for (const publicId of extractPublicIds(project.description)) {
+      try {
+        await deleteImage(publicId);
+      } catch (error) {
+        console.error(
+          `Failed to delete in-content image ${publicId} for project ${id}`,
+          error,
+        );
+      }
     }
   }
 
