@@ -3,6 +3,7 @@
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
+import TextAlign from "@tiptap/extension-text-align";
 import {
   Bold,
   Italic,
@@ -14,6 +15,10 @@ import {
   List,
   ListOrdered,
   Quote,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
   Undo,
   Redo,
 } from "lucide-react";
@@ -87,6 +92,9 @@ export function RichTextEditor({
       }),
       Placeholder.configure({
         placeholder: placeholder ?? "Write your post content here...",
+      }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
       }),
     ],
     content: value,
@@ -214,6 +222,37 @@ function Toolbar({
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
       >
         <Quote className="h-4 w-4" />
+      </ToolbarButton>
+
+      <Divider />
+
+      <ToolbarButton
+        label="Align left"
+        active={editor.isActive({ textAlign: "left" })}
+        onClick={() => editor.chain().focus().setTextAlign("left").run()}
+      >
+        <AlignLeft className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton
+        label="Align center"
+        active={editor.isActive({ textAlign: "center" })}
+        onClick={() => editor.chain().focus().setTextAlign("center").run()}
+      >
+        <AlignCenter className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton
+        label="Align right"
+        active={editor.isActive({ textAlign: "right" })}
+        onClick={() => editor.chain().focus().setTextAlign("right").run()}
+      >
+        <AlignRight className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton
+        label="Justify"
+        active={editor.isActive({ textAlign: "justify" })}
+        onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+      >
+        <AlignJustify className="h-4 w-4" />
       </ToolbarButton>
 
       <Divider />
