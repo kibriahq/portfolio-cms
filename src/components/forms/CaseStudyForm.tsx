@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Eye, Save } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import type { CaseStudyStatus } from "@/types/caseStudy";
 import { RichTextEditor } from "./RichTextEditor";
 import slugify from "@/utils/slugify";
-import { useForm, SubmitHandler, Controller } from "react-hook-form"
+import { useForm, SubmitHandler, Controller, useWatch } from "react-hook-form"
 import { toast } from "react-toastify";
 import { createCaseStudy, updateCaseStudy } from "@/actions/caseStudies";
 import { useRouter } from "next/navigation";
@@ -30,12 +30,12 @@ type Inputs = {
 };
 
 export function CaseStudyForm({ type, caseStudy }: { type: "create" | "edit", caseStudy?: Inputs & { id: string } }) {
-  const { control, register, handleSubmit, watch, setValue, formState: { errors } } = useForm<Inputs>({ defaultValues: caseStudy ? { ...caseStudy, coverImage: "" } : undefined });
+  const { control, register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>({ defaultValues: caseStudy ? { ...caseStudy, coverImage: "" } : undefined });
 
   const router = useRouter();
 
-  const title = watch("title")
-  const slug = watch("slug")
+  const title = useWatch({ control, name: "title" })
+  const slug = useWatch({ control, name: "slug" })
 
   useEffect(() => {
     if (type === "create" && title) {

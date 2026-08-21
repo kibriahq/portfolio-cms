@@ -404,7 +404,6 @@ function ImageControls({ editor }: { editor: Editor }) {
       {open ? (
         <div
           className="absolute z-20 mt-1 w-64 rounded-md border border-zinc-200 bg-white p-2 shadow-lg dark:border-zinc-800 dark:bg-zinc-900"
-          onMouseDown={(event) => event.preventDefault()}
         >
           <div className="mb-2 flex gap-1">
             <button

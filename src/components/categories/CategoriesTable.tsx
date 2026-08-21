@@ -7,7 +7,6 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import type { Category } from "@/types/category";
-import Link from "next/link";
 import { deleteCategory } from "@/actions/categories";
 import { toast } from "react-toastify";
 
@@ -26,7 +25,7 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
       await deleteCategory(id);
       toast.success("Category deleted successfully");
       router.refresh();
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete category");
     }
   };

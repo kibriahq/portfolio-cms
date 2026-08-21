@@ -6,7 +6,6 @@ import { StatusBadge } from "@/components/posts/StatusBadge";
 import { PostCover } from "@/components/posts/PostCover";
 import { formatDate, formatNumber } from "@/lib/utils";
 import type { Project } from "@/types/project";
-import Link from "next/link";
 import { deleteProject } from "@/actions/projects";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";

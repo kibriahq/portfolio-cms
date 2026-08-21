@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Eye, Save } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import type { ProjectStatus } from "@/types/project";
 import { RichTextEditor } from "./RichTextEditor";
 import slugify from "@/utils/slugify";
-import { useForm, SubmitHandler, Controller } from "react-hook-form"
+import { useForm, SubmitHandler, Controller, useWatch } from "react-hook-form"
 import { toast } from "react-toastify";
 import { createProject, updateProject } from "@/actions/projects";
 import { useRouter } from "next/navigation";
@@ -31,12 +31,12 @@ type Inputs = {
 };
 
 export function ProjectForm({ type, project }: { type: "create" | "edit", project?: Inputs & { id: string } }) {
-  const { control, register, handleSubmit, watch, setValue, formState: { errors } } = useForm<Inputs>({ defaultValues: project ? {...project, coverImage: ""} : undefined });
+  const { control, register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>({ defaultValues: project ? {...project, coverImage: ""} : undefined });
 
   const router = useRouter();
 
-  const title = watch("title")
-  const slug = watch("slug")
+  const title = useWatch({ control, name: "title" })
+  const slug = useWatch({ control, name: "slug" })
 
   useEffect(() => {
     if (type === "create" && title) {

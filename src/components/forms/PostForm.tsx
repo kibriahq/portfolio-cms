@@ -8,7 +8,7 @@ import type { PostStatus } from "@/types/post";
 import { RichTextEditor } from "./RichTextEditor";
 import { Category } from "@/types/category";
 import slugify from "@/utils/slugify";
-import { useForm, SubmitHandler, Controller } from "react-hook-form"
+import { useForm, SubmitHandler, Controller, useWatch } from "react-hook-form"
 import { toast } from "react-toastify";
 import { createPost, updatePost } from "@/actions/posts";
 import { useRouter } from "next/navigation";
@@ -31,14 +31,14 @@ type Inputs = {
 };
 
 export function PostForm({ type, categories, post }: { type: "create" | "edit", categories: Category[], post?: Inputs & { id: string } }) {
-  const { control, register, handleSubmit, watch, setValue, formState: { errors } } = useForm<Inputs>({ defaultValues: post ? {...post, coverImage: ""} : undefined });
+  const { control, register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>({ defaultValues: post ? {...post, coverImage: ""} : undefined });
 
   const router = useRouter();
 
   // on change title, update slug automatically if type is create
-  const title = watch("title")
-  const slug = watch("slug")
-  const content = watch("content") ?? "";
+  const title = useWatch({ control, name: "title" })
+  const slug = useWatch({ control, name: "slug" })
+  const content = useWatch({ control, name: "content" }) ?? "";
   
   useEffect(() => {
     if (type === "create" && title) {
