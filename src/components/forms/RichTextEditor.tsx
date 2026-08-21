@@ -4,6 +4,14 @@ import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
+import Link from "@tiptap/extension-link";
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import {
+  Table,
+  TableRow,
+  TableHeader,
+  TableCell,
+} from "@tiptap/extension-table";
 import {
   Bold,
   Italic,
@@ -19,10 +27,14 @@ import {
   AlignCenter,
   AlignRight,
   AlignJustify,
+  Link as LinkIcon,
+  Table as TableIcon,
+  Minus,
+  ChevronDown,
   Undo,
   Redo,
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface RichTextEditorProps {
@@ -96,6 +108,21 @@ export function RichTextEditor({
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        HTMLAttributes: {
+          rel: "noopener noreferrer nofollow",
+          target: "_blank",
+        },
+      }),
+      HorizontalRule,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
     content: value,
     editorProps: {
@@ -127,7 +154,150 @@ export function RichTextEditor({
       )}
     >
       <Toolbar editor={editor} placeholder={placeholder} />
+
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            .tiptap-content table {
+              border-collapse: collapse;
+              table-layout: fixed;
+              width: 100%;
+              margin: 1rem 0;
+              overflow: hidden;
+            }
+            .tiptap-content table td,
+            .tiptap-content table th {
+              border: 1px solid rgb(228 228 231);
+              padding: 0.5rem 0.75rem;
+              vertical-align: top;
+              position: relative;
+              min-width: 1em;
+            }
+            .dark .tiptap-content table td,
+            .dark .tiptap-content table th {
+              border-color: rgb(39 39 42);
+            }
+            .tiptap-content table th {
+              background-color: rgb(244 244 245);
+              font-weight: 600;
+              text-align: left;
+            }
+            .dark .tiptap-content table th {
+              background-color: rgb(24 24 27);
+            }
+            .tiptap-content table .selectedCell::after {
+              background: rgba(99, 102, 241, 0.2);
+              content: "";
+              left: 0; right: 0; top: 0; bottom: 0;
+              position: absolute;
+              pointer-events: none;
+              z-index: 2;
+            }
+            .tiptap-content table .column-resize-handle {
+              background-color: rgb(99 102 241);
+              bottom: -2px;
+              position: absolute;
+              right: -2px;
+              top: 0;
+              width: 4px;
+              pointer-events: none;
+            }
+            .tiptap-content table p { margin: 0; }
+          `,
+        }}
+      />
+
       <EditorContent editor={editor} />
+    </div>
+  );
+}
+
+interface TableMenuAction {
+  label: string;
+  run: () => void;
+}
+
+function TableControls({ editor }: { editor: Editor }) {
+  const [open, setOpen] = useState(false);
+
+  const actions: TableMenuAction[] = [
+    {
+      label: "Add row before",
+      run: () => editor.chain().focus().addRowBefore().run(),
+    },
+    {
+      label: "Add row after",
+      run: () => editor.chain().focus().addRowAfter().run(),
+    },
+    {
+      label: "Delete row",
+      run: () => editor.chain().focus().deleteRow().run(),
+    },
+    {
+      label: "Add column before",
+      run: () => editor.chain().focus().addColumnBefore().run(),
+    },
+    {
+      label: "Add column after",
+      run: () => editor.chain().focus().addColumnAfter().run(),
+    },
+    {
+      label: "Delete column",
+      run: () => editor.chain().focus().deleteColumn().run(),
+    },
+    {
+      label: "Toggle header row",
+      run: () => editor.chain().focus().toggleHeaderRow().run(),
+    },
+    {
+      label: "Toggle header column",
+      run: () => editor.chain().focus().toggleHeaderColumn().run(),
+    },
+    {
+      label: "Delete table",
+      run: () => editor.chain().focus().deleteTable().run(),
+    },
+  ];
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        title="Table options"
+        aria-label="Table options"
+        onMouseDown={(event) => event.preventDefault()}
+        onClick={() => setOpen((value) => !value)}
+        className={cn(
+          "inline-flex h-8 items-center gap-1 rounded-md px-2 text-xs font-medium transition-colors",
+          "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
+          "dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-50",
+          open && "bg-accent-600 text-white hover:bg-accent-600 hover:text-white",
+        )}
+      >
+        Table
+        <ChevronDown className="h-3.5 w-3.5" />
+      </button>
+
+      {open ? (
+        <div
+          className="absolute z-20 mt-1 w-44 rounded-md border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-800 dark:bg-zinc-900"
+          onMouseDown={(event) => event.preventDefault()}
+        >
+          {actions.map((action) => (
+            <button
+              key={action.label}
+              type="button"
+              onClick={() => {
+                action.run();
+                setOpen(false);
+              }}
+              className="block w-full px-3 py-1.5 text-left text-xs text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            >
+              {action.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -254,6 +424,57 @@ function Toolbar({
       >
         <AlignJustify className="h-4 w-4" />
       </ToolbarButton>
+
+      <Divider />
+
+      <ToolbarButton
+        label="Insert link"
+        active={editor.isActive("link")}
+        onClick={() => {
+          const previous = editor.getAttributes("link").href as
+            | string
+            | undefined;
+          const url = window.prompt("Enter URL", previous ?? "https://");
+          if (url === null) {
+            return;
+          }
+          if (url === "") {
+            editor.chain().focus().extendMarkRange("link").unsetLink().run();
+            return;
+          }
+          editor
+            .chain()
+            .focus()
+            .extendMarkRange("link")
+            .setLink({ href: url })
+            .run();
+        }}
+      >
+        <LinkIcon className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton
+        label="Horizontal line"
+        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+      >
+        <Minus className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton
+        label="Insert table"
+        active={editor.isActive("table")}
+        onClick={() =>
+          editor
+            .chain()
+            .focus()
+            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+            .run()
+        }
+      >
+        <TableIcon className="h-4 w-4" />
+      </ToolbarButton>
+
+      {editor.isActive("table") ? (
+        <TableControls editor={editor} />
+      ) : null}
 
       <Divider />
 
