@@ -93,8 +93,8 @@ function Divider() {
   );
 }
 
-const editorClass =
-  "tiptap-content min-h-[20rem] px-3 py-3 text-sm leading-relaxed focus:outline-none";
+  const editorClass =
+    "tiptap-content h-[20rem] overflow-y-auto px-3 py-3 text-sm leading-relaxed focus:outline-none";
 
 export function RichTextEditor({
   value,
