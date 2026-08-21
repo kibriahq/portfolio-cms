@@ -30,6 +30,7 @@ import {
   Link as LinkIcon,
   Table as TableIcon,
   Minus,
+  CodeXml,
   ChevronDown,
   Undo,
   Redo,
@@ -336,6 +337,13 @@ function Toolbar({
         label="Inline code"
         active={editor.isActive("code")}
         onClick={() => editor.chain().focus().toggleCode().run()}
+      >
+        <CodeXml className="h-4 w-4" />
+      </ToolbarButton>
+      <ToolbarButton
+        label="Code block"
+        active={editor.isActive("codeBlock")}
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
       >
         <Code className="h-4 w-4" />
       </ToolbarButton>
