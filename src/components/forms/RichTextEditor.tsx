@@ -653,6 +653,9 @@ function Toolbar({
       >
         <Minus className="h-4 w-4" />
       </ToolbarButton>
+
+      <ImageControls editor={editor} />
+
       <ToolbarButton
         label="Insert table"
         active={editor.isActive("table")}
@@ -666,8 +669,6 @@ function Toolbar({
       >
         <TableIcon className="h-4 w-4" />
       </ToolbarButton>
-
-      <ImageControls editor={editor} />
 
       {editor.isActive("table") ? (
         <TableControls editor={editor} />
