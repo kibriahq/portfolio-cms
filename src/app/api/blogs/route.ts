@@ -16,8 +16,16 @@ export async function GET(request: NextRequest) {
       ...(hideFeatured ? { featured: false } : {}),
       ...(tags.length ? { tags: { hasSome: tags } } : {}),
     },
-    orderBy: { createdAt: "desc" },
     include: { category: true },
+  });
+
+  blogs.sort((a, b) => {
+    const aOrdered = a.displayOrder > 0;
+    const bOrdered = b.displayOrder > 0;
+    if (aOrdered && bOrdered) return a.displayOrder - b.displayOrder;
+    if (aOrdered) return -1;
+    if (bOrdered) return 1;
+    return b.createdAt.getTime() - a.createdAt.getTime();
   });
 
   return NextResponse.json(blogs);
