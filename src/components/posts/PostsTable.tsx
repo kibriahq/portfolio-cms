@@ -19,7 +19,7 @@ export function PostsTable({ posts }: PostsTableProps) {
   const router = useRouter();
 
   const handleDelete = async (postId: string) => {
-    if (!confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+    if (!confirm("Are you sure you want to delete this blog? This action cannot be undone.")) {
       return;
     }
     try {
