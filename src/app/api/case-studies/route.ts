@@ -16,6 +16,21 @@ export async function GET(request: NextRequest) {
       ...(hideFeatured ? { featured: false } : {}),
       ...(tags.length ? { tags: { hasSome: tags } } : {}),
     },
+    select: {
+      id: true,
+      title: true,
+      subTitle: true,
+      slug: true,
+      excerpt: true,
+      coverImage: true,
+      tags: true,
+      featured: true,
+      status: true,
+      displayOrder: true,
+      publishedAt: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
   caseStudies.sort((a, b) => {

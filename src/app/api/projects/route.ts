@@ -16,6 +16,22 @@ export async function GET(request: NextRequest) {
       ...(hideFeatured ? { featured: false } : {}),
       ...(tags.length ? { tags: { hasSome: tags } } : {}),
     },
+    select: {
+      id: true,
+      title: true,
+      subTitle: true,
+      slug: true,
+      excerpt: true,
+      coverImage: true,
+      tags: true,
+      liveUrl: true,
+      githubUrl: true,
+      featured: true,
+      status: true,
+      displayOrder: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
   projects.sort((a, b) => {

@@ -16,7 +16,20 @@ export async function GET(request: NextRequest) {
       ...(hideFeatured ? { featured: false } : {}),
       ...(tags.length ? { tags: { hasSome: tags } } : {}),
     },
-    include: { category: true },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      excerpt: true,
+      coverImage: true,
+      tags: true,
+      featured: true,
+      status: true,
+      displayOrder: true,
+      createdAt: true,
+      updatedAt: true,
+      category: true,
+    },
   });
 
   blogs.sort((a, b) => {
