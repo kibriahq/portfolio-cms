@@ -15,18 +15,42 @@ export async function getTotalPublishedCaseStudiesCount() {
 }
 
 export async function getCaseStudies() {
-  return prisma.caseStudy.findMany({
-    include: {
+  const caseStudies = await prisma.caseStudy.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    select: {
+      id: true,
+      title: true,
+      subTitle: true,
+      slug: true,
+      excerpt: true,
+      coverImage: true,
+      tags: true,
+      featured: true,
+      status: true,
+      displayOrder: true,
+      publishedAt: true,
+      createdAt: true,
+      updatedAt: true,
       _count: {
         select: {
           views: true,
         },
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
   });
+
+  caseStudies.sort((a, b) => {
+    const aOrdered = a.displayOrder > 0;
+    const bOrdered = b.displayOrder > 0;
+    if (aOrdered && bOrdered) return a.displayOrder - b.displayOrder;
+    if (aOrdered) return -1;
+    if (bOrdered) return 1;
+    return b.createdAt.getTime() - a.createdAt.getTime();
+  });
+
+  return caseStudies;
 }
 
 export async function getCaseStudyById(id: string) {
@@ -42,7 +66,9 @@ export async function createCaseStudy(data: CaseStudyInput) {
     throw new Error("A case study with this slug already exists.");
   }
 
-  const caseStudy: CaseStudyInput & { coverImagePublicId?: string } = { ...data };
+  const caseStudy: CaseStudyInput & { coverImagePublicId?: string } = {
+    ...data,
+  };
   caseStudy.content = sanitizeHtmlContent(data.content ?? "");
 
   if (data.coverImage) {
@@ -89,7 +115,9 @@ export async function updateCaseStudy(id: string, data: CaseStudyInput) {
     throw new Error("A case study with this slug already exists.");
   }
 
-  const caseStudy: CaseStudyInput & { coverImagePublicId?: string } = { ...data };
+  const caseStudy: CaseStudyInput & { coverImagePublicId?: string } = {
+    ...data,
+  };
   caseStudy.content = sanitizeHtmlContent(data.content ?? "");
   const oldCaseStudy = await prisma.caseStudy.findUnique({ where: { id } });
 
@@ -118,13 +146,15 @@ export async function updateCaseStudy(id: string, data: CaseStudyInput) {
     }
   } else {
     caseStudy.coverImage = oldCaseStudy?.coverImage ?? undefined;
-    caseStudy.coverImagePublicId = oldCaseStudy?.coverImagePublicId ?? undefined;
+    caseStudy.coverImagePublicId =
+      oldCaseStudy?.coverImagePublicId ?? undefined;
   }
 
   if (data.status === "PUBLISHED" && !oldCaseStudy.publishedAt) {
     caseStudy.publishedAt = new Date();
   } else {
-    caseStudy.publishedAt = data.publishedAt ?? oldCaseStudy.publishedAt ?? null;
+    caseStudy.publishedAt =
+      data.publishedAt ?? oldCaseStudy.publishedAt ?? null;
   }
 
   return prisma.caseStudy.update({ where: { id }, data: caseStudy });
