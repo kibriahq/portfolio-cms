@@ -15,18 +15,43 @@ export async function getTotalPublishedProjectsCount() {
 }
 
 export async function getProjects() {
-  return prisma.project.findMany({
-    include: {
+  const projects = await prisma.project.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    select: {
+      id: true,
+      title: true,
+      subTitle: true,
+      slug: true,
+      excerpt: true,
+      coverImage: true,
+      tags: true,
+      liveUrl: true,
+      githubUrl: true,
+      featured: true,
+      status: true,
+      displayOrder: true,
+      createdAt: true,
+      updatedAt: true,
       _count: {
         select: {
           views: true,
         },
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
   });
+
+  projects.sort((a, b) => {
+    const aOrdered = a.displayOrder > 0;
+    const bOrdered = b.displayOrder > 0;
+    if (aOrdered && bOrdered) return a.displayOrder - b.displayOrder;
+    if (aOrdered) return -1;
+    if (bOrdered) return 1;
+    return b.createdAt.getTime() - a.createdAt.getTime();
+  });
+
+  return projects;
 }
 
 export async function getProjectById(id: string) {
@@ -65,7 +90,7 @@ export async function createProject(data: ProjectInput) {
     project.coverImagePublicId = undefined;
   }
   project.displayOrder = data.displayOrder ? Number(data.displayOrder) : 0;
-  
+
   return prisma.project.create({ data: project });
 }
 
