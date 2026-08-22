@@ -20,6 +20,7 @@ export interface Post {
   coverImage?: string | null;
   content?: string;
   featured?: boolean;
+  displayOrder: number;
 }
 
 export interface Activity {

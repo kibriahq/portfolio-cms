@@ -53,6 +53,9 @@ export function CaseStudiesTable({ caseStudies }: CaseStudiesTableProps) {
               <th className="hidden px-5 py-3 font-medium sm:px-6 md:table-cell">
                 Featured
               </th>
+              <th className="hidden px-5 py-3 font-medium sm:px-6 md:table-cell">
+                Order
+              </th>
               <th className="hidden px-5 py-3 font-medium sm:px-6 lg:table-cell">
                 Created
               </th>
@@ -109,6 +112,15 @@ export function CaseStudiesTable({ caseStudies }: CaseStudiesTableProps) {
                   {caseStudy.featured ? (
                     <span className="inline-flex items-center rounded-full bg-accent-50 px-2 py-0.5 text-xs font-medium text-accent-700 dark:bg-accent-500/10 dark:text-accent-300">
                       Featured
+                    </span>
+                  ) : (
+                    <span className="text-zinc-400 dark:text-zinc-500">—</span>
+                  )}
+                </td>
+                <td className="hidden px-5 py-3 sm:px-6 md:table-cell">
+                  {caseStudy.displayOrder > 0 ? (
+                    <span className="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-500/10 dark:text-blue-300">
+                      {caseStudy.displayOrder}
                     </span>
                   ) : (
                     <span className="text-zinc-400 dark:text-zinc-500">—</span>
