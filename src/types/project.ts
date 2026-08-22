@@ -6,17 +6,17 @@ export interface Project {
   subTitle: string | null;
   slug: string;
   excerpt: string | null;
-  description: string | null;
+  description?: string | null;
   coverImage: string | null;
-  coverImagePublicId: string | null;
+  coverImagePublicId?: string | null;
   tags: string[];
   liveUrl: string | null;
   githubUrl: string | null;
   featured: boolean;
   displayOrder: number;
   status: ProjectStatus;
-  metaTitle: string | null;
-  metaDescription: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
   _count: {
     views: number;
   };

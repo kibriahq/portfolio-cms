@@ -6,15 +6,15 @@ export interface CaseStudy {
   subTitle: string | null;
   slug: string;
   excerpt: string | null;
-  content: string;
+  content?: string;
   coverImage: string | null;
-  coverImagePublicId: string | null;
+  coverImagePublicId?: string | null;
   tags: string[];
   status: CaseStudyStatus;
   featured: boolean;
   displayOrder: number;
-  metaTitle: string | null;
-  metaDescription: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
   publishedAt: string | Date | null;
   _count: {
     views: number;
