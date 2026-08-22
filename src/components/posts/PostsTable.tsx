@@ -24,11 +24,11 @@ export function PostsTable({ posts }: PostsTableProps) {
     }
     try {
       await deletePost(postId);
-      toast.success("Post deleted successfully");
+      toast.success("Blog deleted successfully");
       router.refresh();
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "An error occurred while deleting the post"
+        error instanceof Error ? error.message : "An error occurred while deleting the blog"
       );
     }
   }
@@ -37,7 +37,7 @@ export function PostsTable({ posts }: PostsTableProps) {
     return (
       <EmptyState
         icon={<Eye className="h-5 w-5" />}
-        title="No posts found"
+        title="No blogs found"
         description="Try adjusting your search or filters to find what you are looking for."
       />
     );

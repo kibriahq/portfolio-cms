@@ -80,11 +80,11 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
    if(type === "create") {
       try {
         await createPost(payload);
-        toast.success("Post created successfully");
+        toast.success("Blog created successfully");
         router.push("/blogs");
       } catch (error) {
         toast.error(
-          error instanceof Error ? error.message : "An error occurred while creating the post"
+          error instanceof Error ? error.message : "An error occurred while creating the blog"
         );
       }
     } 
@@ -92,11 +92,11 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
     if(type === "edit" && post?.id) {
       try {
         await updatePost(post.id, payload);
-        toast.success("Post updated successfully");
+        toast.success("Blog updated successfully");
         router.push("/blogs");
       } catch (error) {
         toast.error(
-          error instanceof Error ? error.message : "An error occurred while updating the post"
+          error instanceof Error ? error.message : "An error occurred while updating the blog"
         );
       }
     }
