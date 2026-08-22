@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
       featured: true,
       status: true,
       displayOrder: true,
+      readingTime: true,
       createdAt: true,
       updatedAt: true,
       category: true,
