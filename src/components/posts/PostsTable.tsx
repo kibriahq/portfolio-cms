@@ -129,7 +129,7 @@ export function PostsTable({ posts }: PostsTableProps) {
                       size="icon"
                       aria-label={`Edit ${post.title}`}
                       title="Edit"
-                      onClick={() => router.push(`/posts/edit/${post.id}`)}
+                      onClick={() => router.push(`/blogs/edit/${post.id}`)}
                     >
                       <Pencil className="h-4 w-4" />
                     </Button>

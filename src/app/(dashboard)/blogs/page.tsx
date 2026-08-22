@@ -11,10 +11,10 @@ export default async function PostsPage() {
   return (
     <>
       <PageHeader
-        title="Posts / Blog"
+        title="Blog Posts"
         description="Manage your blog content, drafts, and published posts."
         actions={
-          <Link href="/posts/new">
+          <Link href="/blogs/new">
             <Button>
               <Plus className="h-4 w-4" />
               Add Post

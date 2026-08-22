@@ -14,10 +14,10 @@ export default async function NewPostPage() {
         title="Add Post"
         description="Create a new blog post. Fill in the details and publish when ready."
         actions={
-          <Link href="/posts">
+          <Link href="/blogs">
             <Button variant="secondary">
               <ArrowLeft className="h-4 w-4" />
-              Back to Posts
+              Back to Blogs
             </Button>
           </Link>
         }

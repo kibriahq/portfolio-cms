@@ -21,14 +21,14 @@ export function TopPostsTable({ posts, limit = 5 }: TopPostsTableProps) {
       <div className="flex items-center justify-between border-b border-zinc-200 px-5 py-4 dark:border-zinc-800 sm:px-6">
         <div>
           <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
-            Top Posts
+            Top Blogs
           </h2>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
             Your most viewed published and draft content.
           </p>
         </div>
         <Link
-          href="/posts"
+          href="/blogs"
           className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
         >
           View all
@@ -69,7 +69,7 @@ export function TopPostsTable({ posts, limit = 5 }: TopPostsTableProps) {
                         className="h-10 w-10 shrink-0"
                       />
                       <Link
-                        href="/posts"
+                        href="/blogs"
                         className="font-medium text-zinc-900 hover:underline dark:text-zinc-50"
                       >
                         {post.title}

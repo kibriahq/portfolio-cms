@@ -22,10 +22,10 @@ export default async function NewPostPage({ params }: { params: Promise<{ id: st
                 title="Edit Post"
                 description="Update the details of your blog post."
                 actions={
-                    <Link href="/posts">
+                    <Link href="/blogs">
                         <Button variant="secondary">
                             <ArrowLeft className="h-4 w-4" />
-                            Back to Posts
+                            Back to Blogs
                         </Button>
                     </Link>
                 }

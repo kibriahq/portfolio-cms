@@ -11,7 +11,7 @@ export default async function CategoriesPage() {
   return (
     <>
       <PageHeader
-        title="Categories"
+        title="Blog Categories"
         description="Organize your posts into meaningful groups and topics."
         actions={
           <Link href="/categories/new">

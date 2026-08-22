@@ -81,7 +81,7 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
       try {
         await createPost(payload);
         toast.success("Post created successfully");
-        router.push("/posts");
+        router.push("/blogs");
       } catch (error) {
         toast.error(
           error instanceof Error ? error.message : "An error occurred while creating the post"
@@ -93,7 +93,7 @@ export function PostForm({ type, categories, post }: { type: "create" | "edit", 
       try {
         await updatePost(post.id, payload);
         toast.success("Post updated successfully");
-        router.push("/posts");
+        router.push("/blogs");
       } catch (error) {
         toast.error(
           error instanceof Error ? error.message : "An error occurred while updating the post"
