@@ -15,8 +15,23 @@ export async function getTotalPublishedPostsCount() {
 }
 
 export async function getPosts() {
-  return prisma.blog.findMany({
-    include: {
+  const blogs = await prisma.blog.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      excerpt: true,
+      coverImage: true,
+      tags: true,
+      featured: true,
+      status: true,
+      displayOrder: true,
+      readingTime: true,
+      createdAt: true,
+      updatedAt: true,
       category: {
         select: {
           name: true,
@@ -29,10 +44,18 @@ export async function getPosts() {
         },
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
   });
+
+  blogs.sort((a, b) => {
+    const aOrdered = a.displayOrder > 0;
+    const bOrdered = b.displayOrder > 0;
+    if (aOrdered && bOrdered) return a.displayOrder - b.displayOrder;
+    if (aOrdered) return -1;
+    if (bOrdered) return 1;
+    return b.createdAt.getTime() - a.createdAt.getTime();
+  });
+
+  return blogs;
 }
 
 export async function getPostById(id: string) {
